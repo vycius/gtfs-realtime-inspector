@@ -5,8 +5,8 @@ const CACHE_NAME = 'flutter-app-cache';
 const RESOURCES = {
   "favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "main.dart.js": "0eee79b0f13da714c68bc9385a216cfb",
-"index.html": "b2a26a990bc953f9fc7e7b3f3df19392",
-"/": "b2a26a990bc953f9fc7e7b3f3df19392",
+"index.html": "bd93ab10e57909d6cc2003cc6813706f",
+"/": "bd93ab10e57909d6cc2003cc6813706f",
 "flutter.js": "f85e6fb278b0fd20c349186fb46ae36d",
 "manifest.json": "b316007fc9723945546ad4cb6ea28fad",
 "canvaskit/canvaskit.js": "2bc454a691c631b07a9307ac4ca47797",
@@ -21,8 +21,8 @@ const RESOURCES = {
 "version.json": "22e27ddca80aec3f69377fff4cefa70b",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
-"icons/Icon-maskable-192.png": "c457ef57daa1d16f64b27b786ec2ea3c",
-"icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea"
+"icons/Icon-maskable-192.png": "3ea5223a87ba9e4a6d68cd1f498f4fd6",
+"icons/Icon-maskable-512.png": "45701ec8f0ae0038707a368addc1d4ff"
 };
 
 // The application shell files that are downloaded before a service worker can
