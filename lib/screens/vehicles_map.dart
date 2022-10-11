@@ -1,29 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:gtfs_realtime_bindings/gtfs_realtime_bindings.dart';
+import 'package:gtfs_realtime_inspector/transit_service.dart';
 import 'package:latlong2/latlong.dart';
 
 class VehiclesMap extends StatelessWidget {
   final List<VehiclePosition> vehiclePositions;
 
-  // late Map<String, Trip> _tripLookup;
-  // late Map<String, TransitRoute> _routeLookup;
+  late Map<String, String> tripIdToRouteIdLookup;
+  late Map<String, GTFSRoute> routesLookup;
 
   VehiclesMap({
     required this.vehiclePositions,
-    // required this.trips,
-    // required this.routes,
-  }) {
-    // _tripLookup = HashMap.fromIterables(
-    //   trips.map((t) => t.trip_id),
-    //   trips,
-    // );
-    //
-    // _routeLookup = HashMap.fromIterables(
-    //   routes.map((r) => r.route_id),
-    //   routes,
-    // );
-  }
+    required this.tripIdToRouteIdLookup,
+    required this.routesLookup,
+  });
 
   MarkerLayerOptions buildLayer() {
     return MarkerLayerOptions(
@@ -41,6 +32,8 @@ class VehiclesMap extends StatelessWidget {
             builder: (context) {
               return _VehicleIcon(
                 vehiclePosition: vehiclePosition,
+                tripIdToRouteIdLookup: tripIdToRouteIdLookup,
+                routesLookup: routesLookup,
               );
 
               return _buildVehicleIcon(
@@ -181,22 +174,21 @@ class VehiclesMap extends StatelessWidget {
 
 class _VehicleIcon extends StatelessWidget {
   final VehiclePosition vehiclePosition;
+  final Map<String, String> tripIdToRouteIdLookup;
+  final Map<String, GTFSRoute> routesLookup;
 
   _VehicleIcon({
     required this.vehiclePosition,
+    required this.tripIdToRouteIdLookup,
+    required this.routesLookup,
   }) : super(key: ObjectKey(vehiclePosition));
 
   @override
   Widget build(BuildContext context) {
-    // final trip = _tripLookup[vehiclePosition.trip.tripId];
-    // final routeId = trip?.route_id;
-    // final route = (routeId != null) ? _routeLookup[routeId] : null;
+    final routeId = tripIdToRouteIdLookup[vehiclePosition.trip.tripId];
+    final route = (routeId != null) ? routesLookup[routeId] : null;
 
-    // final routeColor = route?.parsedRouteColor ?? Colors.indigo;
-    // final routeTextColor = route?.parsedRouteTextColor ?? Colors.white;
-
-    final routeColor = Colors.indigo;
-    final routeTextColor = Colors.white;
+    final routeColor = route?.parsedRouteColor ?? Colors.indigo;
 
     final angle = degToRadian(vehiclePosition.position.bearing) + pi * 3 / 4;
 
@@ -217,16 +209,32 @@ class _VehicleIcon extends StatelessWidget {
               padding: const EdgeInsets.all(4),
               child: Transform.rotate(
                 angle: -angle,
-                child: Icon(
-                  Icons.directions_bus,
-                  size: 15,
-                  color: routeTextColor,
-                ),
+                child: _buildVehicleBody(route),
               ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildVehicleBody(GTFSRoute? route) {
+    final routeTextColor = route?.parsedRouteTextColor ?? Colors.white;
+
+    if (route == null) {
+      return Icon(
+        Icons.directions_bus,
+        size: 15,
+        color: routeTextColor,
+      );
+    } else {
+      final text = route.routeShortName ?? route.routeLongName ?? '?';
+
+      return Text(
+        text,
+        maxLines: 1,
+        style: TextStyle(color: routeTextColor),
+      );
+    }
   }
 }

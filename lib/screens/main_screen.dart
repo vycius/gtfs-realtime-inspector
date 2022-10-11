@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/github.dart';
-import 'package:gtfs_realtime_inspector/gtfs_realtime_service.dart';
 import 'package:gtfs_realtime_inspector/screens/vehicles_map.dart';
+import 'package:gtfs_realtime_inspector/transit_service.dart';
 import 'package:gtfs_realtime_inspector/widgets/AppFutureBuilder.dart';
 import 'package:split_view/split_view.dart';
 
@@ -24,9 +24,11 @@ class MainScreen extends StatelessWidget {
         title: const Text('GTFS Realtime inspector'),
         centerTitle: true,
       ),
-      body: AppFutureBuilder<GTFSRealtimeData>(
-        future: GTFSRealtimeService().fetchGtfRealtimeData(gtfsRealtimeUrls),
-        builder: (context, rt) {
+      body: AppFutureBuilder<TransitData>(
+        future: TransitService().fetchTransitFeeds(gtfsUrl, gtfsRealtimeUrls),
+        builder: (context, data) {
+          final rt = data.rt;
+
           return Stack(
             children: [
               SplitView(
@@ -37,7 +39,11 @@ class MainScreen extends StatelessWidget {
                   limits: [null, WeightLimit(max: 0.4)],
                 ),
                 children: [
-                  VehiclesMap(vehiclePositions: rt.vehiclePositions),
+                  VehiclesMap(
+                    vehiclePositions: rt.vehiclePositions,
+                    tripIdToRouteIdLookup: data.gtfs.tripIdToRouteIdLookup,
+                    routesLookup: data.gtfs.routesLookup,
+                  ),
                   ListView.separated(
                     itemCount: rt.vehiclePositions.length,
                     separatorBuilder: (context, index) => const Divider(),
