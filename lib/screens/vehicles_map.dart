@@ -43,7 +43,6 @@ class VehiclesMap extends StatelessWidget {
     return FlutterMap(
       options: MapOptions(
         center: _getCenter(),
-        // boundsOptions: FitBoundsOptions,
         interactiveFlags: InteractiveFlag.all & ~InteractiveFlag.rotate,
       ),
       nonRotatedChildren: [

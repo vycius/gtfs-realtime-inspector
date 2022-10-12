@@ -18,6 +18,7 @@ class CodeView extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
+          title: const Text('GTFS Realtime inspector'),
           bottom: TabBar(
             tabs: [
               Tab(
@@ -31,9 +32,6 @@ class CodeView extends StatelessWidget {
               ),
             ],
             indicatorSize: TabBarIndicatorSize.label,
-          ),
-          title: const TextField(
-            decoration: InputDecoration(prefixIcon: Icon(Icons.search)),
           ),
         ),
         body: TabBarView(
