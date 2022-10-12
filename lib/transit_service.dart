@@ -14,7 +14,7 @@ class TransitService {
     final gtfsData = await _fetchGTFSFromUrl(gtfsUrl);
     final gtfsRealtimeData = await _fetchGtfRealtimeData(gtfsRealtimeUrls);
 
-    return TransitData(gtfs: gtfsData, rt: gtfsRealtimeData);
+    return TransitData(gtfs: gtfsData, realtime: gtfsRealtimeData);
   }
 
   Future<FeedMessage> _fetchGtfRealtimeFeed(String gtfsRealtimeUrl) async {
@@ -212,9 +212,9 @@ class _CsvRowValues {
 
 class TransitData {
   final GTFSData gtfs;
-  final GTFSRealtimeData rt;
+  final GTFSRealtimeData realtime;
 
-  TransitData({required this.gtfs, required this.rt});
+  TransitData({required this.gtfs, required this.realtime});
 }
 
 class GTFSData {
