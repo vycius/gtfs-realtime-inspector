@@ -32,7 +32,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_highlight: ^0.7.0
-  flutter_map: ^2.2.0
+  flutter_map: ^3.0.0
   gtfs_realtime_bindings: ^1.0.1
   http: ^0.13.5
   latlong2: ^0.8.1

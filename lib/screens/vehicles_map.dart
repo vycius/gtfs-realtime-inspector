@@ -15,8 +15,8 @@ class VehiclesMap extends StatelessWidget {
     required this.routesLookup,
   });
 
-  MarkerLayerOptions buildLayer() {
-    return MarkerLayerOptions(
+  MarkerLayer buildLayer() {
+    return MarkerLayer(
       markers: [
         for (final vehiclePosition in vehiclePositions)
           Marker(
@@ -46,17 +46,17 @@ class VehiclesMap extends StatelessWidget {
         // boundsOptions: FitBoundsOptions,
         interactiveFlags: InteractiveFlag.all & ~InteractiveFlag.rotate,
       ),
-      layers: [
-        TileLayerOptions(
-          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          userAgentPackageName: 'lt.transit.transit',
-        ),
-        buildLayer(),
-      ],
       nonRotatedChildren: [
         AttributionWidget.defaultWidget(
           source: 'OpenStreetMap contributors',
         ),
+      ],
+      children: [
+        TileLayer(
+          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+          userAgentPackageName: 'lt.transit.transit',
+        ),
+        buildLayer(),
       ],
     );
   }
