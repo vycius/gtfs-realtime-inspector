@@ -5,7 +5,7 @@ import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/github.dart';
 import 'package:gtfs_realtime_inspector/screens/vehicles_map.dart';
 import 'package:gtfs_realtime_inspector/transit_service.dart';
-import 'package:gtfs_realtime_inspector/widgets/AppFutureBuilder.dart';
+import 'package:gtfs_realtime_inspector/widgets/app_future_builder.dart';
 import 'package:split_view/split_view.dart';
 
 class MainScreen extends StatelessWidget {
