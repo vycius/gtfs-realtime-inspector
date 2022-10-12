@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gtfs_realtime_inspector/screens/code_view.dart';
 import 'package:gtfs_realtime_inspector/screens/vehicles_map.dart';
 import 'package:gtfs_realtime_inspector/transit_service.dart';
 import 'package:gtfs_realtime_inspector/widgets/app_future_builder.dart';
-import 'package:gtfs_realtime_inspector/widgets/code_view.dart';
 import 'package:split_view/split_view.dart';
 
 class MainScreen extends StatelessWidget {
@@ -23,7 +23,9 @@ class MainScreen extends StatelessWidget {
           builder: (context, data) {
             return SplitView(
               viewMode: SplitViewMode.Horizontal,
-              indicator: const SplitIndicator(viewMode: SplitViewMode.Horizontal),
+              indicator: const SplitIndicator(
+                viewMode: SplitViewMode.Horizontal,
+              ),
               controller: SplitViewController(
                 weights: [0.4, 0.6],
               ),

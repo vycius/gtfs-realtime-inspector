@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:gtfs_realtime_bindings/gtfs_realtime_bindings.dart';
+import 'package:gtfs_realtime_inspector/code_view_cubit.dart';
 import 'package:gtfs_realtime_inspector/transit_service.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -8,14 +10,12 @@ class VehiclesMap extends StatelessWidget {
   final List<VehiclePosition> vehiclePositions;
   final Map<String, String> tripIdToRouteIdLookup;
   final Map<String, GTFSRoute> routesLookup;
-  final void Function(VehiclePosition vehiclePosition) onVehicleSelected;
   final mapController = MapController();
 
   VehiclesMap({
     required this.vehiclePositions,
     required this.tripIdToRouteIdLookup,
     required this.routesLookup,
-    required this.onVehicleSelected,
   });
 
   MarkerLayer buildLayer() {
@@ -31,7 +31,8 @@ class VehiclesMap extends StatelessWidget {
             anchorPos: AnchorPos.align(AnchorAlign.center),
             builder: (context) {
               return GestureDetector(
-                onTap: () => _onVehiclePositionSelected(vehiclePosition),
+                onTap: () =>
+                    context.read<FilterCubit>().selectVehicle(vehiclePosition),
                 child: _VehicleIcon(
                   vehiclePosition: vehiclePosition,
                   tripIdToRouteIdLookup: tripIdToRouteIdLookup,
@@ -44,36 +45,37 @@ class VehiclesMap extends StatelessWidget {
     );
   }
 
-  void _onVehiclePositionSelected(VehiclePosition vehiclePosition) {
-    mapController.move(
-      LatLng(
-        vehiclePosition.position.latitude,
-        vehiclePosition.position.longitude,
-      ),
-      mapController.zoom,
-    );
-
-    onVehicleSelected(vehiclePosition);
-  }
-
   @override
   Widget build(BuildContext context) {
-    return FlutterMap(
-      options: MapOptions(
-        center: _getCenter(),
-        interactiveFlags: InteractiveFlag.all & ~InteractiveFlag.rotate,
+    return BlocListener<FilterCubit, VehiclePosition?>(
+      listener: (_, selectedVehicle) {
+        if (selectedVehicle != null) {
+          mapController.move(
+            LatLng(
+              selectedVehicle.position.latitude,
+              selectedVehicle.position.longitude,
+            ),
+            mapController.zoom,
+          );
+        }
+      },
+      child: FlutterMap(
+        options: MapOptions(
+          center: _getCenter(),
+          interactiveFlags: InteractiveFlag.all & ~InteractiveFlag.rotate,
+        ),
+        nonRotatedChildren: [
+          TileLayer(
+            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            userAgentPackageName: 'lt.transit.transit',
+          ),
+          buildLayer(),
+          AttributionWidget.defaultWidget(
+            source: 'OpenStreetMap contributors',
+          ),
+        ],
+        mapController: mapController,
       ),
-      nonRotatedChildren: [
-        TileLayer(
-          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          userAgentPackageName: 'lt.transit.transit',
-        ),
-        buildLayer(),
-        AttributionWidget.defaultWidget(
-          source: 'OpenStreetMap contributors',
-        ),
-      ],
-      mapController: mapController,
     );
   }
 

@@ -31,6 +31,7 @@ dependencies:
   csv: ^5.0.1
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.1.1
   flutter_highlight: ^0.7.0
   flutter_map: ^3.0.0
   gtfs_realtime_bindings: ^1.0.1
