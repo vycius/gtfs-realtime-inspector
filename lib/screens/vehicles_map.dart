@@ -6,11 +6,10 @@ import 'package:latlong2/latlong.dart';
 
 class VehiclesMap extends StatelessWidget {
   final List<VehiclePosition> vehiclePositions;
+  final Map<String, String> tripIdToRouteIdLookup;
+  final Map<String, GTFSRoute> routesLookup;
 
-  late Map<String, String> tripIdToRouteIdLookup;
-  late Map<String, GTFSRoute> routesLookup;
-
-  VehiclesMap({
+  const VehiclesMap({
     required this.vehiclePositions,
     required this.tripIdToRouteIdLookup,
     required this.routesLookup,
@@ -27,111 +26,16 @@ class VehiclesMap extends StatelessWidget {
               vehiclePosition.position.longitude,
             ),
             anchorPos: AnchorPos.align(AnchorAlign.center),
-            // width: 25,
-            // height: 25,
             builder: (context) {
               return _VehicleIcon(
                 vehiclePosition: vehiclePosition,
                 tripIdToRouteIdLookup: tripIdToRouteIdLookup,
                 routesLookup: routesLookup,
               );
-
-              return _buildVehicleIcon(
-                context,
-                vehiclePosition,
-              );
             },
           ),
       ],
     );
-  }
-
-  Widget _buildVehicleIcon(
-    BuildContext context,
-    VehiclePosition vehiclePosition,
-  ) {
-    // final trip = _tripLookup[vehiclePosition.trip.tripId];
-    // final routeId = trip?.route_id;
-    // final route = (routeId != null) ? _routeLookup[routeId] : null;
-
-    // final routeColor = route?.parsedRouteColor ?? Colors.indigo;
-    // final routeTextColor = route?.parsedRouteTextColor ?? Colors.white;
-
-    final routeColor = Colors.indigo;
-    final routeTextColor = Colors.white;
-
-    final angle = degToRadian(vehiclePosition.position.bearing) + pi * 3 / 4;
-
-    return Transform.rotate(
-      angle: angle,
-      child: Material(
-        elevation: 2,
-        borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(200),
-          bottomRight: Radius.circular(200),
-          topLeft: Radius.circular(200),
-        ),
-        color: routeColor,
-        child: Center(
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Padding(
-              padding: const EdgeInsets.all(4),
-              child: Transform.rotate(
-                angle: -angle,
-                child: Text(
-                  vehiclePosition.position.bearing.toString(),
-                  maxLines: 1,
-                  style: TextStyle(
-                    color: routeTextColor,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  // Future<void> _onPressed(BuildContext context, TransitRoute route, Trip trip) {
-  //   return Navigator.pushNamed(
-  //     context,
-  //     NavigatorRoutes.routeTrip,
-  //     arguments: TripScreenArguments(
-  //       route: route,
-  //       trip: trip,
-  //       stop: null,
-  //     ),
-  //   );
-  // }
-
-  Widget _buildVehicleBody() {
-    return const Icon(
-      Icons.directions_bus,
-      color: Colors.white,
-      size: 15,
-    );
-    //
-    // final routeShortName = route?.route_short_name;
-    //
-    // if (route != null && routeShortName != null) {
-    //   return Padding(
-    //     padding: const EdgeInsets.all(2),
-    //     child: FittedBox(
-    //       fit: BoxFit.scaleDown,
-    //       child: Text(
-    //         routeShortName,
-    //         maxLines: 1,
-    //       ),
-    //     ),
-    //   );
-    // } else {
-    //   return Icon(
-    //     Icons.directions_bus,
-    //     size: 15,
-    //   );
-    // }
   }
 
   @override
