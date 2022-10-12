@@ -8,11 +8,14 @@ class VehiclesMap extends StatelessWidget {
   final List<VehiclePosition> vehiclePositions;
   final Map<String, String> tripIdToRouteIdLookup;
   final Map<String, GTFSRoute> routesLookup;
+  final void Function(VehiclePosition vehiclePosition) onVehicleSelected;
+  final mapController = MapController();
 
-  const VehiclesMap({
+  VehiclesMap({
     required this.vehiclePositions,
     required this.tripIdToRouteIdLookup,
     required this.routesLookup,
+    required this.onVehicleSelected,
   });
 
   MarkerLayer buildLayer() {
@@ -27,15 +30,30 @@ class VehiclesMap extends StatelessWidget {
             ),
             anchorPos: AnchorPos.align(AnchorAlign.center),
             builder: (context) {
-              return _VehicleIcon(
-                vehiclePosition: vehiclePosition,
-                tripIdToRouteIdLookup: tripIdToRouteIdLookup,
-                routesLookup: routesLookup,
+              return GestureDetector(
+                onTap: () => _onVehiclePositionSelected(vehiclePosition),
+                child: _VehicleIcon(
+                  vehiclePosition: vehiclePosition,
+                  tripIdToRouteIdLookup: tripIdToRouteIdLookup,
+                  routesLookup: routesLookup,
+                ),
               );
             },
           ),
       ],
     );
+  }
+
+  void _onVehiclePositionSelected(VehiclePosition vehiclePosition) {
+    mapController.move(
+      LatLng(
+        vehiclePosition.position.latitude,
+        vehiclePosition.position.longitude,
+      ),
+      mapController.zoom,
+    );
+
+    onVehicleSelected(vehiclePosition);
   }
 
   @override
@@ -46,17 +64,16 @@ class VehiclesMap extends StatelessWidget {
         interactiveFlags: InteractiveFlag.all & ~InteractiveFlag.rotate,
       ),
       nonRotatedChildren: [
-        AttributionWidget.defaultWidget(
-          source: 'OpenStreetMap contributors',
-        ),
-      ],
-      children: [
         TileLayer(
           urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
           userAgentPackageName: 'lt.transit.transit',
         ),
         buildLayer(),
+        AttributionWidget.defaultWidget(
+          source: 'OpenStreetMap contributors',
+        ),
       ],
+      mapController: mapController,
     );
   }
 
