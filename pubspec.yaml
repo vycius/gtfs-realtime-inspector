@@ -28,6 +28,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   archive: ^3.3.1
+  async: ^2.9.0
   csv: ^5.0.1
   flutter:
     sdk: flutter
@@ -41,6 +42,7 @@ dependencies:
   http: ^0.13.5
   latlong2: ^0.8.1
   split_view: ^3.2.1
+  url_launcher: ^6.1.6
 
 
 dev_dependencies:

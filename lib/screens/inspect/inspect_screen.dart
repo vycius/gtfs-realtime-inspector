@@ -1,3 +1,4 @@
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/code_view.dart';
@@ -7,7 +8,7 @@ import 'package:gtfs_realtime_inspector/screens/inspect/transit_service.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/vehicles_map.dart';
 import 'package:split_view/split_view.dart';
 
-class InspectScreen extends StatelessWidget {
+class InspectScreen extends StatefulWidget {
   final String gtfsUrl;
   final List<String> gtfsRealtimeUrls;
 
@@ -18,10 +19,22 @@ class InspectScreen extends StatelessWidget {
   });
 
   @override
+  State<InspectScreen> createState() => _InspectScreenState();
+}
+
+class _InspectScreenState extends State<InspectScreen> {
+  final _transitDataMemo = AsyncMemoizer<TransitData>();
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _TransitDataFutureBuilder(
-        future: TransitService().fetchTransitFeeds(gtfsUrl, gtfsRealtimeUrls),
+        future: _transitDataMemo.runOnce(
+          () => TransitService().fetchTransitFeeds(
+            widget.gtfsUrl,
+            widget.gtfsRealtimeUrls,
+          ),
+        ),
         builder: (context, data) {
           return _InspectScreenBody(data: data);
         },
@@ -40,6 +53,8 @@ class _InspectScreenBody extends StatelessWidget {
     return BlocProvider(
       create: (_) {
         final state = InspectScreenState(
+          gtfsUrl: data.gtfsUrl,
+          gtfsRealtimeUrls: data.gtfsRealtimeUrls,
           gtfs: data.gtfs,
           allTripUpdates: data.realtime.tripUpdates,
           allVehiclePositions: data.realtime.vehiclePositions,
@@ -118,7 +133,7 @@ class _TransitDataFutureBuilder extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(top: 16),
                 child: Text(
-                  'Fetching GTFS and GTFS Realtime transit feeds. It might take long time...',
+                  'Fetching GTFS and GTFS Realtime transit feeds. It might take a long time...',
                 ),
               )
             ],

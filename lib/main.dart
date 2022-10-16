@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gtfs_realtime_inspector/screens/info/info_screen.dart';
 import 'package:gtfs_realtime_inspector/screens/input/feeds_input_screen.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/inspect_screen.dart';
 import 'package:gtfs_realtime_inspector/utils.dart';
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
 }
 
 final GoRouter _router = GoRouter(
+  debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(
       name: 'input',
@@ -52,41 +54,63 @@ final GoRouter _router = GoRouter(
       builder: (BuildContext context, GoRouterState state) {
         return FeedsInputScreen();
       },
-    ),
-    GoRoute(
-      name: 'inspect',
-      path: '/inspect',
-      builder: (BuildContext context, GoRouterState state) {
-        final queryParams = state.queryParametersAll;
+      routes: [
+        GoRoute(
+          name: 'inspect',
+          path: 'inspect',
+          builder: (BuildContext context, GoRouterState state) {
+            final queryParams = state.queryParametersAll;
 
-        final gtfsUrl = queryParams['gtfs_url']!.first;
-        final gtfsRealtimeUrls = queryParams['gtfs_realtime_urls']!;
+            final gtfsUrl = queryParams['gtfs_url']!.first;
+            final gtfsRealtimeUrls = queryParams['gtfs_realtime_urls']!;
 
-        return InspectScreen(
-          gtfsUrl: gtfsUrl,
-          gtfsRealtimeUrls: gtfsRealtimeUrls,
-        );
-      },
-      redirect: (BuildContext context, GoRouterState state) {
-        if (state.name == 'inspect') {
-          final queryParams = state.queryParametersAll;
+            return InspectScreen(
+              gtfsUrl: gtfsUrl,
+              gtfsRealtimeUrls: gtfsRealtimeUrls,
+            );
+          },
+          redirect: (BuildContext context, GoRouterState state) {
+            if (state.name == 'inspect') {
+              final queryParams = state.queryParametersAll;
 
-          final gtfsUrl = queryParams['gtfs_url']?.first;
-          final gtfsRealtimeUrls = queryParams['gtfs_realtime_urls'];
+              final gtfsUrl = queryParams['gtfs_url']?.first;
+              final gtfsRealtimeUrls = queryParams['gtfs_realtime_urls'];
 
-          if (gtfsUrl == null || !isValidUrl(gtfsUrl)) {
-            return '/';
-          }
+              if (gtfsUrl == null || !isValidUrl(gtfsUrl)) {
+                return '/';
+              }
 
-          if (gtfsRealtimeUrls == null ||
-              gtfsRealtimeUrls.isEmpty ||
-              gtfsRealtimeUrls.any((u) => !isValidUrl(u))) {
-            return '/';
-          }
-        }
+              if (gtfsRealtimeUrls == null ||
+                  gtfsRealtimeUrls.isEmpty ||
+                  gtfsRealtimeUrls.any((u) => !isValidUrl(u))) {
+                return '/';
+              }
+            }
 
-        return null;
-      },
+            return null;
+          },
+          routes: [
+            GoRoute(
+              name: 'info',
+              path: 'info',
+              pageBuilder: (BuildContext context, GoRouterState state) {
+                final queryParams = state.queryParametersAll;
+
+                final gtfsUrl = queryParams['gtfs_url']!.first;
+                final gtfsRealtimeUrls = queryParams['gtfs_realtime_urls']!;
+
+                return MaterialPage(
+                  fullscreenDialog: true,
+                  child: InfoScreen(
+                    gtfsUrl: gtfsUrl,
+                    gtfsRealtimeUrls: gtfsRealtimeUrls,
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ],
     ),
   ],
 );

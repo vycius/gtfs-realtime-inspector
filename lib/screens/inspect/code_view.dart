@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/darcula.dart';
 import 'package:flutter_highlight/themes/github.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gtfs_realtime_bindings/gtfs_realtime_bindings.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/inspect_cubit.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/models.dart';
@@ -15,6 +16,8 @@ class CodeView extends StatelessWidget {
     return BlocBuilder<InspectCubit, InspectScreenState>(
       builder: (context, state) {
         return _CodeViewBody(
+          gtfsUrl: state.gtfsUrl,
+          gtfsRealtimeUrls: state.gtfsRealtimeUrls,
           tripUpdates: state.filteredTripUpdates,
           vehiclePositions: state.filteredVehiclePositions,
           alerts: state.filteredAlerts,
@@ -26,12 +29,17 @@ class CodeView extends StatelessWidget {
 }
 
 class _CodeViewBody extends StatelessWidget {
+  final String gtfsUrl;
+  final List<String> gtfsRealtimeUrls;
+
   final List<TripUpdate> tripUpdates;
   final List<VehiclePosition> vehiclePositions;
   final List<Alert> alerts;
   final VehiclePosition? selectedVehiclePosition;
 
   const _CodeViewBody({
+    required this.gtfsUrl,
+    required this.gtfsRealtimeUrls,
     required this.tripUpdates,
     required this.vehiclePositions,
     required this.alerts,
@@ -59,6 +67,22 @@ class _CodeViewBody extends StatelessWidget {
             ],
             indicatorSize: TabBarIndicatorSize.label,
           ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.info),
+              onPressed: () {
+                context.go(
+                  context.namedLocation(
+                    'info',
+                    queryParams: {
+                      'gtfs_url': gtfsUrl,
+                      'gtfs_realtime_urls': gtfsRealtimeUrls,
+                    },
+                  ),
+                );
+              },
+            )
+          ],
         ),
         body: Stack(
           children: [
