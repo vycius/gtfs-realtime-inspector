@@ -28,7 +28,9 @@ mixin _$InspectScreenState {
   List<VehiclePosition> get filteredVehiclePositions =>
       throw _privateConstructorUsedError;
   List<Alert> get filteredAlerts => throw _privateConstructorUsedError;
-  VehiclePosition? get selectedVehiclePosition =>
+  VehicleDescriptor? get selectedVehicleDescriptor =>
+      throw _privateConstructorUsedError;
+  TripDescriptor? get selectedTripDescriptor =>
       throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -52,7 +54,8 @@ abstract class $InspectScreenStateCopyWith<$Res> {
       List<TripUpdate> filteredTripUpdates,
       List<VehiclePosition> filteredVehiclePositions,
       List<Alert> filteredAlerts,
-      VehiclePosition? selectedVehiclePosition});
+      VehicleDescriptor? selectedVehicleDescriptor,
+      TripDescriptor? selectedTripDescriptor});
 }
 
 /// @nodoc
@@ -77,7 +80,8 @@ class _$InspectScreenStateCopyWithImpl<$Res, $Val extends InspectScreenState>
     Object? filteredTripUpdates = null,
     Object? filteredVehiclePositions = null,
     Object? filteredAlerts = null,
-    Object? selectedVehiclePosition = freezed,
+    Object? selectedVehicleDescriptor = freezed,
+    Object? selectedTripDescriptor = freezed,
   }) {
     return _then(_value.copyWith(
       gtfsUrl: null == gtfsUrl
@@ -116,10 +120,14 @@ class _$InspectScreenStateCopyWithImpl<$Res, $Val extends InspectScreenState>
           ? _value.filteredAlerts
           : filteredAlerts // ignore: cast_nullable_to_non_nullable
               as List<Alert>,
-      selectedVehiclePosition: freezed == selectedVehiclePosition
-          ? _value.selectedVehiclePosition
-          : selectedVehiclePosition // ignore: cast_nullable_to_non_nullable
-              as VehiclePosition?,
+      selectedVehicleDescriptor: freezed == selectedVehicleDescriptor
+          ? _value.selectedVehicleDescriptor
+          : selectedVehicleDescriptor // ignore: cast_nullable_to_non_nullable
+              as VehicleDescriptor?,
+      selectedTripDescriptor: freezed == selectedTripDescriptor
+          ? _value.selectedTripDescriptor
+          : selectedTripDescriptor // ignore: cast_nullable_to_non_nullable
+              as TripDescriptor?,
     ) as $Val);
   }
 }
@@ -142,7 +150,8 @@ abstract class _$$_InspectScreenStateCopyWith<$Res>
       List<TripUpdate> filteredTripUpdates,
       List<VehiclePosition> filteredVehiclePositions,
       List<Alert> filteredAlerts,
-      VehiclePosition? selectedVehiclePosition});
+      VehicleDescriptor? selectedVehicleDescriptor,
+      TripDescriptor? selectedTripDescriptor});
 }
 
 /// @nodoc
@@ -165,7 +174,8 @@ class __$$_InspectScreenStateCopyWithImpl<$Res>
     Object? filteredTripUpdates = null,
     Object? filteredVehiclePositions = null,
     Object? filteredAlerts = null,
-    Object? selectedVehiclePosition = freezed,
+    Object? selectedVehicleDescriptor = freezed,
+    Object? selectedTripDescriptor = freezed,
   }) {
     return _then(_$_InspectScreenState(
       gtfsUrl: null == gtfsUrl
@@ -204,10 +214,14 @@ class __$$_InspectScreenStateCopyWithImpl<$Res>
           ? _value._filteredAlerts
           : filteredAlerts // ignore: cast_nullable_to_non_nullable
               as List<Alert>,
-      selectedVehiclePosition: freezed == selectedVehiclePosition
-          ? _value.selectedVehiclePosition
-          : selectedVehiclePosition // ignore: cast_nullable_to_non_nullable
-              as VehiclePosition?,
+      selectedVehicleDescriptor: freezed == selectedVehicleDescriptor
+          ? _value.selectedVehicleDescriptor
+          : selectedVehicleDescriptor // ignore: cast_nullable_to_non_nullable
+              as VehicleDescriptor?,
+      selectedTripDescriptor: freezed == selectedTripDescriptor
+          ? _value.selectedTripDescriptor
+          : selectedTripDescriptor // ignore: cast_nullable_to_non_nullable
+              as TripDescriptor?,
     ));
   }
 }
@@ -225,7 +239,8 @@ class _$_InspectScreenState implements _InspectScreenState {
       required final List<TripUpdate> filteredTripUpdates,
       required final List<VehiclePosition> filteredVehiclePositions,
       required final List<Alert> filteredAlerts,
-      this.selectedVehiclePosition})
+      this.selectedVehicleDescriptor,
+      this.selectedTripDescriptor})
       : _gtfsRealtimeUrls = gtfsRealtimeUrls,
         _allTripUpdates = allTripUpdates,
         _allVehiclePositions = allVehiclePositions,
@@ -288,11 +303,13 @@ class _$_InspectScreenState implements _InspectScreenState {
   }
 
   @override
-  final VehiclePosition? selectedVehiclePosition;
+  final VehicleDescriptor? selectedVehicleDescriptor;
+  @override
+  final TripDescriptor? selectedTripDescriptor;
 
   @override
   String toString() {
-    return 'InspectScreenState(gtfsUrl: $gtfsUrl, gtfsRealtimeUrls: $gtfsRealtimeUrls, gtfs: $gtfs, allTripUpdates: $allTripUpdates, allVehiclePositions: $allVehiclePositions, allAlerts: $allAlerts, filteredTripUpdates: $filteredTripUpdates, filteredVehiclePositions: $filteredVehiclePositions, filteredAlerts: $filteredAlerts, selectedVehiclePosition: $selectedVehiclePosition)';
+    return 'InspectScreenState(gtfsUrl: $gtfsUrl, gtfsRealtimeUrls: $gtfsRealtimeUrls, gtfs: $gtfs, allTripUpdates: $allTripUpdates, allVehiclePositions: $allVehiclePositions, allAlerts: $allAlerts, filteredTripUpdates: $filteredTripUpdates, filteredVehiclePositions: $filteredVehiclePositions, filteredAlerts: $filteredAlerts, selectedVehicleDescriptor: $selectedVehicleDescriptor, selectedTripDescriptor: $selectedTripDescriptor)';
   }
 
   @override
@@ -316,9 +333,11 @@ class _$_InspectScreenState implements _InspectScreenState {
                 other._filteredVehiclePositions, _filteredVehiclePositions) &&
             const DeepCollectionEquality()
                 .equals(other._filteredAlerts, _filteredAlerts) &&
-            (identical(
-                    other.selectedVehiclePosition, selectedVehiclePosition) ||
-                other.selectedVehiclePosition == selectedVehiclePosition));
+            (identical(other.selectedVehicleDescriptor,
+                    selectedVehicleDescriptor) ||
+                other.selectedVehicleDescriptor == selectedVehicleDescriptor) &&
+            (identical(other.selectedTripDescriptor, selectedTripDescriptor) ||
+                other.selectedTripDescriptor == selectedTripDescriptor));
   }
 
   @override
@@ -333,7 +352,8 @@ class _$_InspectScreenState implements _InspectScreenState {
       const DeepCollectionEquality().hash(_filteredTripUpdates),
       const DeepCollectionEquality().hash(_filteredVehiclePositions),
       const DeepCollectionEquality().hash(_filteredAlerts),
-      selectedVehiclePosition);
+      selectedVehicleDescriptor,
+      selectedTripDescriptor);
 
   @JsonKey(ignore: true)
   @override
@@ -354,7 +374,8 @@ abstract class _InspectScreenState implements InspectScreenState {
       required final List<TripUpdate> filteredTripUpdates,
       required final List<VehiclePosition> filteredVehiclePositions,
       required final List<Alert> filteredAlerts,
-      final VehiclePosition? selectedVehiclePosition}) = _$_InspectScreenState;
+      final VehicleDescriptor? selectedVehicleDescriptor,
+      final TripDescriptor? selectedTripDescriptor}) = _$_InspectScreenState;
 
   @override
   String get gtfsUrl;
@@ -375,7 +396,9 @@ abstract class _InspectScreenState implements InspectScreenState {
   @override
   List<Alert> get filteredAlerts;
   @override
-  VehiclePosition? get selectedVehiclePosition;
+  VehicleDescriptor? get selectedVehicleDescriptor;
+  @override
+  TripDescriptor? get selectedTripDescriptor;
   @override
   @JsonKey(ignore: true)
   _$$_InspectScreenStateCopyWith<_$_InspectScreenState> get copyWith =>

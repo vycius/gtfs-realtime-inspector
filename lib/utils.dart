@@ -13,13 +13,3 @@ String? urlValidator(String? url) {
     return 'Please enter valid URL';
   }
 }
-
-extension ListExtensions<T> on List<T> {
-  T? get(int index) {
-    if (index < length) {
-      return this[index];
-    } else {
-      return null;
-    }
-  }
-}

@@ -5,48 +5,73 @@ import 'package:gtfs_realtime_inspector/screens/inspect/models.dart';
 class InspectCubit extends Cubit<InspectScreenState> {
   InspectCubit(super.initialState);
 
-  void selectVehiclePosition(VehiclePosition vehiclePosition) {
+  void select(
+    VehicleDescriptor? vehicleDescriptor,
+    TripDescriptor? tripDescriptor,
+  ) {
     emit(
       state.copyWith(
-        selectedVehiclePosition: vehiclePosition,
-        filteredTripUpdates: _filterTripUpdates(vehiclePosition),
-        filteredVehiclePositions: _filterVehiclePositions(vehiclePosition),
-        filteredAlerts: _filterAlerts(vehiclePosition),
+        selectedVehicleDescriptor: vehicleDescriptor,
+        selectedTripDescriptor: tripDescriptor,
+        filteredTripUpdates: _filterTripUpdates(
+          vehicleDescriptor,
+          tripDescriptor,
+        ),
+        filteredVehiclePositions: _filterVehiclePositions(
+          vehicleDescriptor,
+          tripDescriptor,
+        ),
+        filteredAlerts: _filterAlerts(tripDescriptor),
       ),
     );
   }
 
-  void deselectVehicle() {
-    emit(
-      state.copyWith(
-        selectedVehiclePosition: null,
-        filteredTripUpdates: state.allTripUpdates,
-        filteredVehiclePositions: state.allVehiclePositions,
-        filteredAlerts: state.allAlerts,
-      ),
-    );
+  void deselect() {
+    select(null, null);
   }
 
   List<VehiclePosition> _filterVehiclePositions(
-    VehiclePosition selectedVehiclePosition,
+    VehicleDescriptor? vehicleDescriptor,
+    TripDescriptor? tripDescriptor,
   ) {
-    return state.allVehiclePositions
-        .where((v) => v.vehicle.id == selectedVehiclePosition.vehicle.id)
-        .toList();
+    if (vehicleDescriptor == null && tripDescriptor == null) {
+      return state.allVehiclePositions;
+    } else {
+      return state.allVehiclePositions
+          .where(
+            (v) =>
+                (v.hasVehicle() && v.vehicle == vehicleDescriptor) ||
+                (v.hasTrip() && v.trip == tripDescriptor),
+          )
+          .toList();
+    }
   }
 
   List<TripUpdate> _filterTripUpdates(
-    VehiclePosition selectedVehiclePosition,
+    VehicleDescriptor? vehicleDescriptor,
+    TripDescriptor? tripDescriptor,
   ) {
-    return state.allTripUpdates
-        .where((t) => t.vehicle.id == selectedVehiclePosition.vehicle.id)
-        .toList();
+    if (vehicleDescriptor == null && tripDescriptor == null) {
+      return state.allTripUpdates;
+    } else {
+      return state.allTripUpdates
+          .where(
+            (t) =>
+                (t.hasVehicle() && t.vehicle == vehicleDescriptor) ||
+                (t.hasTrip() && t.trip == tripDescriptor),
+          )
+          .toList();
+    }
   }
 
   List<Alert> _filterAlerts(
-    VehiclePosition selectedVehiclePosition,
+    TripDescriptor? selectedTripDescriptor,
   ) {
-    final tripId = selectedVehiclePosition.trip.tripId;
+    if (selectedTripDescriptor == null) {
+      return state.allAlerts;
+    }
+
+    final tripId = selectedTripDescriptor.tripId;
     final routeId = state.gtfs.routesLookup[tripId]?.routeId;
 
     return state.allAlerts

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:gtfs_realtime_inspector/screens/input/feeds_input_screen.dart';
 import 'package:gtfs_realtime_inspector/utils.dart';
@@ -13,15 +14,15 @@ class FeedsInputBloc extends FormBloc<FeedsInput, String> {
     validators: [FieldBlocValidators.required, urlValidator],
   );
   late final gtfsRealtime1Url = TextFieldBloc(
-    initialValue: initialGtfsRealtimeUrls.get(0) ?? '',
+    initialValue: initialGtfsRealtimeUrls.elementAtOrNull(0) ?? '',
     validators: [FieldBlocValidators.required, urlValidator],
   );
   late final gtfsRealtime2Url = TextFieldBloc(
-    initialValue: initialGtfsRealtimeUrls.get(1) ?? '',
+    initialValue: initialGtfsRealtimeUrls.elementAtOrNull(1) ?? '',
     validators: [urlValidator],
   );
   late final gtfsRealtime3Url = TextFieldBloc(
-    initialValue: initialGtfsRealtimeUrls.get(2) ?? '',
+    initialValue: initialGtfsRealtimeUrls.elementAtOrNull(2) ?? '',
     validators: [urlValidator],
   );
 
@@ -44,9 +45,15 @@ class FeedsInputBloc extends FormBloc<FeedsInput, String> {
     List<String> gtfsRealtimeUrlsValue,
   ) {
     gtfsUrl.updateValue(gtfsUrlValue);
-    gtfsRealtime1Url.updateValue(gtfsRealtimeUrlsValue.get(0) ?? '');
-    gtfsRealtime2Url.updateValue(gtfsRealtimeUrlsValue.get(1) ?? '');
-    gtfsRealtime3Url.updateValue(gtfsRealtimeUrlsValue.get(2) ?? '');
+    gtfsRealtime1Url.updateValue(
+      gtfsRealtimeUrlsValue.elementAtOrNull(0) ?? '',
+    );
+    gtfsRealtime2Url.updateValue(
+      gtfsRealtimeUrlsValue.elementAtOrNull(1) ?? '',
+    );
+    gtfsRealtime3Url.updateValue(
+      gtfsRealtimeUrlsValue.elementAtOrNull(2) ?? '',
+    );
   }
 
   @override

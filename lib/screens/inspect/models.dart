@@ -17,7 +17,8 @@ class InspectScreenState with _$InspectScreenState {
     required List<TripUpdate> filteredTripUpdates,
     required List<VehiclePosition> filteredVehiclePositions,
     required List<Alert> filteredAlerts,
-    VehiclePosition? selectedVehiclePosition,
+    VehicleDescriptor? selectedVehicleDescriptor,
+    TripDescriptor? selectedTripDescriptor,
   }) = _InspectScreenState;
 }
 

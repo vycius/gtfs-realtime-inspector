@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -31,9 +32,18 @@ class VehiclesMap extends StatelessWidget {
             anchorPos: AnchorPos.align(AnchorAlign.center),
             builder: (context) {
               return GestureDetector(
-                onTap: () => context
-                    .read<InspectCubit>()
-                    .selectVehiclePosition(vehiclePosition),
+                onTap: () {
+                  final vehicleDescriptor = vehiclePosition.hasVehicle()
+                      ? vehiclePosition.vehicle
+                      : null;
+
+                  final tripDescriptor =
+                      vehiclePosition.hasTrip() ? vehiclePosition.trip : null;
+                  return context.read<InspectCubit>().select(
+                        vehicleDescriptor,
+                        tripDescriptor,
+                      );
+                },
                 child: _VehicleIcon(
                   vehiclePosition: vehiclePosition,
                   tripIdToRouteIdLookup: tripIdToRouteIdLookup,
@@ -50,12 +60,18 @@ class VehiclesMap extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<InspectCubit, InspectScreenState>(
       listener: (_, state) {
-        final selectedVehicle = state.selectedVehiclePosition;
-        if (selectedVehicle != null) {
+        final selectedVehicleDescriptor = state.selectedVehicleDescriptor;
+        final vehiclePosition = vehiclePositions
+            .firstWhereOrNull(
+              (v) => v.vehicle == selectedVehicleDescriptor,
+            )
+            ?.position;
+
+        if (vehiclePosition != null) {
           mapController.move(
             LatLng(
-              selectedVehicle.position.latitude,
-              selectedVehicle.position.longitude,
+              vehiclePosition.latitude,
+              vehiclePosition.longitude,
             ),
             mapController.zoom,
           );

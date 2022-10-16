@@ -44,6 +44,8 @@ dependencies:
   split_view: ^3.2.1
   url_launcher: ^6.1.6
 
+dependency_overrides:
+  collection: ^1.17.0
 
 dev_dependencies:
   build_runner: ^2.3.0
