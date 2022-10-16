@@ -118,7 +118,7 @@ class _TransitDataFutureBuilder extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(top: 16),
                 child: Text(
-                  'Fetch GTFS and GTFS Realtime transit feeds. It might take long time.',
+                  'Fetching GTFS and GTFS Realtime transit feeds. It might take long time...',
                 ),
               )
             ],
