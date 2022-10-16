@@ -52,7 +52,15 @@ final GoRouter _router = GoRouter(
       name: 'input',
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return FeedsInputScreen();
+        final queryParams = state.queryParametersAll;
+
+        final gtfsUrl = queryParams['gtfs_url']?.first;
+        final gtfsRealtimeUrls = queryParams['gtfs_realtime_urls'] ?? [];
+
+        return FeedsInputScreen(
+          initialGtfsUrl: gtfsUrl,
+          initialGtfsRealtimeUrls: gtfsRealtimeUrls,
+        );
       },
       routes: [
         GoRoute(

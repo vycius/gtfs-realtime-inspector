@@ -4,6 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:gtfs_realtime_inspector/screens/input/feeds_input_bloc.dart';
 
 class FeedsInputScreen extends StatelessWidget {
+  final String? initialGtfsUrl;
+  final List<String> initialGtfsRealtimeUrls;
+
   final _exampleFeeds = {
     'Vilnius, Lithuania': FeedsInput(
       gtfsUrl: 'https://stops.lt/vilnius/vilnius/gtfs.zip',
@@ -43,10 +46,19 @@ class FeedsInputScreen extends StatelessWidget {
     ),
   };
 
+  FeedsInputScreen({
+    super.key,
+    required this.initialGtfsUrl,
+    required this.initialGtfsRealtimeUrls,
+  });
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => FeedsInputBloc(),
+      create: (context) => FeedsInputBloc(
+        initialGtfsUrl: initialGtfsUrl,
+        initialGtfsRealtimeUrls: initialGtfsRealtimeUrls,
+      ),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('GTFS Realtime inspector'),
@@ -120,10 +132,11 @@ class FeedsInputScreen extends StatelessWidget {
                                   label: Text(feed.key),
                                   tooltip: 'Inspect',
                                   onPressed: () {
-                                    _inspectFeeds(
-                                      context,
-                                      feed.value.gtfsUrl,
-                                      feed.value.gtfsRealtimeUrls,
+                                    final feedInput = feed.value;
+
+                                    formBloc.updateValues(
+                                      feedInput.gtfsUrl,
+                                      feedInput.gtfsRealtimeUrls,
                                     );
                                   },
                                 ),
@@ -147,7 +160,7 @@ class FeedsInputScreen extends StatelessWidget {
     String gtfsUrl,
     List<String> gtfsRealtimeUrls,
   ) {
-    context.go(
+    context.push(
       context.namedLocation(
         'inspect',
         queryParams: {

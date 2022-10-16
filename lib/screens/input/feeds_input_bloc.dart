@@ -5,16 +5,30 @@ import 'package:gtfs_realtime_inspector/screens/input/feeds_input_screen.dart';
 import 'package:gtfs_realtime_inspector/utils.dart';
 
 class FeedsInputBloc extends FormBloc<FeedsInput, String> {
-  final gtfsUrl = TextFieldBloc(
-    validators: [FieldBlocValidators.required, urlValidator],
-  );
-  final gtfsRealtime1Url = TextFieldBloc(
-    validators: [FieldBlocValidators.required, urlValidator],
-  );
-  final gtfsRealtime2Url = TextFieldBloc(validators: [urlValidator]);
-  final gtfsRealtime3Url = TextFieldBloc(validators: [urlValidator]);
+  final String? initialGtfsUrl;
+  final List<String> initialGtfsRealtimeUrls;
 
-  FeedsInputBloc() : super() {
+  late final gtfsUrl = TextFieldBloc(
+    initialValue: initialGtfsUrl ?? '',
+    validators: [FieldBlocValidators.required, urlValidator],
+  );
+  late final gtfsRealtime1Url = TextFieldBloc(
+    initialValue: initialGtfsRealtimeUrls.get(0) ?? '',
+    validators: [FieldBlocValidators.required, urlValidator],
+  );
+  late final gtfsRealtime2Url = TextFieldBloc(
+    initialValue: initialGtfsRealtimeUrls.get(1) ?? '',
+    validators: [urlValidator],
+  );
+  late final gtfsRealtime3Url = TextFieldBloc(
+    initialValue: initialGtfsRealtimeUrls.get(2) ?? '',
+    validators: [urlValidator],
+  );
+
+  FeedsInputBloc({
+    required this.initialGtfsUrl,
+    required this.initialGtfsRealtimeUrls,
+  }) : super() {
     addFieldBlocs(
       fieldBlocs: [
         gtfsUrl,
@@ -23,6 +37,16 @@ class FeedsInputBloc extends FormBloc<FeedsInput, String> {
         gtfsRealtime3Url,
       ],
     );
+  }
+
+  void updateValues(
+    String gtfsUrlValue,
+    List<String> gtfsRealtimeUrlsValue,
+  ) {
+    gtfsUrl.updateValue(gtfsUrlValue);
+    gtfsRealtime1Url.updateValue(gtfsRealtimeUrlsValue.get(0) ?? '');
+    gtfsRealtime2Url.updateValue(gtfsRealtimeUrlsValue.get(1) ?? '');
+    gtfsRealtime3Url.updateValue(gtfsRealtimeUrlsValue.get(2) ?? '');
   }
 
   @override
