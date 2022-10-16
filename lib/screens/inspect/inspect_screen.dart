@@ -59,10 +59,7 @@ class _InspectScreenBody extends StatelessWidget {
           weights: [0.4, 0.6],
         ),
         children: [
-          CodeView(
-            gtfs: data.gtfs,
-            realtime: data.realtime,
-          ),
+          CodeView(),
           VehiclesMap(
             vehiclePositions: data.realtime.vehiclePositions,
             tripIdToRouteIdLookup: data.gtfs.tripIdToRouteIdLookup,

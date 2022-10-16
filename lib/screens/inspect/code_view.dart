@@ -10,11 +10,6 @@ import 'package:gtfs_realtime_inspector/screens/inspect/inspect_cubit.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/models.dart';
 
 class CodeView extends StatelessWidget {
-  final GTFSData gtfs;
-  final GTFSRealtimeData realtime;
-
-  const CodeView({super.key, required this.gtfs, required this.realtime});
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<InspectCubit, InspectScreenState>(
