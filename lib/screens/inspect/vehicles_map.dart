@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:gtfs_realtime_bindings/gtfs_realtime_bindings.dart';
-import 'package:gtfs_realtime_inspector/code_view_cubit.dart';
+import 'package:gtfs_realtime_inspector/transit_cubit.dart';
 import 'package:gtfs_realtime_inspector/transit_service.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -32,7 +32,7 @@ class VehiclesMap extends StatelessWidget {
             builder: (context) {
               return GestureDetector(
                 onTap: () =>
-                    context.read<FilterCubit>().selectVehicle(vehiclePosition),
+                    context.read<InspectCubit>().selectVehicle(vehiclePosition),
                 child: _VehicleIcon(
                   vehiclePosition: vehiclePosition,
                   tripIdToRouteIdLookup: tripIdToRouteIdLookup,
@@ -47,7 +47,7 @@ class VehiclesMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<FilterCubit, VehiclePosition?>(
+    return BlocListener<InspectCubit, VehiclePosition?>(
       listener: (_, selectedVehicle) {
         if (selectedVehicle != null) {
           mapController.move(

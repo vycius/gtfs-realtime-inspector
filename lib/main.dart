@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gtfs_realtime_inspector/code_view_cubit.dart';
-import 'package:gtfs_realtime_inspector/navigator_routes.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gtfs_realtime_inspector/screens/input/feed_input_screen.dart';
+import 'package:gtfs_realtime_inspector/screens/inspect/inspect_screen.dart';
+import 'package:gtfs_realtime_inspector/transit_cubit.dart';
+import 'package:gtfs_realtime_inspector/utils.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,21 +15,83 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    const inputDecorationTheme = InputDecorationTheme(
+      border: OutlineInputBorder(),
+      helperMaxLines: 5,
+      errorMaxLines: 5,
+    );
+
+    final lightTheme = ThemeData(
+      primarySwatch: Colors.indigo,
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+      inputDecorationTheme: inputDecorationTheme,
+      brightness: Brightness.light,
+    );
+    final darkTheme = ThemeData(
+      primarySwatch: Colors.indigo,
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+      inputDecorationTheme: inputDecorationTheme,
+      brightness: Brightness.dark,
+    );
+
     return BlocProvider(
-      create: (_) => FilterCubit(),
-      child: MaterialApp(
+      create: (_) => InspectCubit(),
+      child: MaterialApp.router(
         title: 'GTFS Realtime inspector',
-        theme: ThemeData(
-          primarySwatch: Colors.indigo,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
+        theme: lightTheme,
+        darkTheme: darkTheme,
         debugShowCheckedModeBanner: false,
-        initialRoute: NavigatorRoutes.routeHome,
-        onGenerateRoute: NavigatorRoutes.onGenerateRoute,
+        routerConfig: _router,
       ),
     );
   }
 }
+
+final GoRouter _router = GoRouter(
+  routes: <GoRoute>[
+    GoRoute(
+      name: 'input',
+      path: '/',
+      builder: (BuildContext context, GoRouterState state) {
+        return FeedInputScreen();
+      },
+    ),
+    GoRoute(
+      name: 'inspect',
+      path: '/inspect',
+      builder: (BuildContext context, GoRouterState state) {
+        final queryParams = state.queryParametersAll;
+
+        final gtfsUrl = queryParams['gtfs_url']!.first;
+        final gtfsRealtimeUrls = queryParams['gtfs_realtime_urls']!;
+
+        return InspectScreen(
+          gtfsUrl: gtfsUrl,
+          gtfsRealtimeUrls: gtfsRealtimeUrls,
+        );
+      },
+      redirect: (BuildContext context, GoRouterState state) {
+        if (state.name == 'inspect') {
+          final queryParams = state.queryParametersAll;
+
+          final gtfsUrl = queryParams['gtfs_url']?.first;
+          final gtfsRealtimeUrls = queryParams['gtfs_realtime_urls'];
+
+          if (gtfsUrl == null || !isValidUrl(gtfsUrl)) {
+            return '/';
+          }
+
+          if (gtfsRealtimeUrls == null ||
+              gtfsRealtimeUrls.isEmpty ||
+              gtfsRealtimeUrls.any((u) => !isValidUrl(u))) {
+            return '/';
+          }
+        }
+
+        return null;
+      },
+    ),
+  ],
+);

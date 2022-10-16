@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
+import 'package:flutter_highlight/themes/darcula.dart';
 import 'package:flutter_highlight/themes/github.dart';
 import 'package:gtfs_realtime_bindings/gtfs_realtime_bindings.dart';
-import 'package:gtfs_realtime_inspector/code_view_cubit.dart';
+import 'package:gtfs_realtime_inspector/transit_cubit.dart';
 import 'package:gtfs_realtime_inspector/transit_service.dart';
 
 class CodeView extends StatelessWidget {
@@ -16,7 +17,7 @@ class CodeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FilterCubit, VehiclePosition?>(
+    return BlocBuilder<InspectCubit, VehiclePosition?>(
       builder: (context, selectedVehiclePosition) {
         return _CodeViewBody(
           tripUpdates: _filterTripUpdates(selectedVehiclePosition),
@@ -139,7 +140,7 @@ class _CodeViewBody extends StatelessWidget {
                     deleteIcon: const Icon(Icons.close),
                     deleteButtonTooltipMessage: 'Deselect',
                     onDeleted: () =>
-                        context.read<FilterCubit>().deselectVehicle(),
+                        context.read<InspectCubit>().deselectVehicle(),
                   ),
                 ),
               )
@@ -165,7 +166,7 @@ class _CodeTab<T> extends StatelessWidget {
     final jsonEncoder = JsonEncoder.withIndent(' ' * 3);
     return ListView.separated(
       itemCount: entities.length,
-      separatorBuilder: (context, index) => const Divider(),
+      separatorBuilder: (context, index) => const Divider(height: 1),
       itemBuilder: (context, index) {
         final entity = entities[index];
         final json = jsonEncoder.convert(protoJsonBuilder(entity));
@@ -174,7 +175,9 @@ class _CodeTab<T> extends StatelessWidget {
           json,
           language: 'json',
           padding: const EdgeInsets.all(8),
-          theme: githubTheme,
+          theme: MediaQuery.of(context).platformBrightness == Brightness.light
+              ? githubTheme
+              : darculaTheme,
         );
       },
     );
