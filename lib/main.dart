@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gtfs_realtime_inspector/screens/input/feed_input_screen.dart';
+import 'package:gtfs_realtime_inspector/screens/input/feeds_input_screen.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/inspect_screen.dart';
 import 'package:gtfs_realtime_inspector/transit_cubit.dart';
 import 'package:gtfs_realtime_inspector/utils.dart';
@@ -55,7 +55,7 @@ final GoRouter _router = GoRouter(
       name: 'input',
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return FeedInputScreen();
+        return FeedsInputScreen();
       },
     ),
     GoRoute(
