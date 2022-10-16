@@ -23,9 +23,7 @@ class TransitService {
   }
 
   Future<FeedMessage> _fetchGtfRealtimeFeed(String gtfsRealtimeUrl) async {
-    final timestamp = DateTime.now().millisecondsSinceEpoch;
-    final url =
-        'https://api.allorigins.win/raw?url=$gtfsRealtimeUrl?time=$timestamp';
+    final url = 'https://cors-proxy.vycius.workers.dev/?$gtfsRealtimeUrl';
     final response = await http.get(Uri.parse(url));
     final message = FeedMessage.fromBuffer(response.bodyBytes);
 
@@ -63,9 +61,7 @@ class TransitService {
   }
 
   Future<GTFSData> _fetchGTFSFromUrl(String gtfsUrl) async {
-    final timestamp = DateTime.now().millisecondsSinceEpoch;
-
-    final url = 'https://api.allorigins.win/raw?url=$gtfsUrl?time=$timestamp';
+    final url = 'https://cors-proxy.vycius.workers.dev/?$gtfsUrl';
 
     final response = await http.get(Uri.parse(url));
 
