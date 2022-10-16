@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gtfs_realtime_inspector/blocs/feeds_input_bloc.dart';
+import 'package:gtfs_realtime_inspector/screens/input/feeds_input_bloc.dart';
 
 class FeedsInputScreen extends StatelessWidget {
   final _exampleFeeds = {

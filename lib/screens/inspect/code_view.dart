@@ -6,8 +6,8 @@ import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/darcula.dart';
 import 'package:flutter_highlight/themes/github.dart';
 import 'package:gtfs_realtime_bindings/gtfs_realtime_bindings.dart';
-import 'package:gtfs_realtime_inspector/transit_cubit.dart';
-import 'package:gtfs_realtime_inspector/transit_service.dart';
+import 'package:gtfs_realtime_inspector/screens/inspect/inspect_cubit.dart';
+import 'package:gtfs_realtime_inspector/screens/inspect/models.dart';
 
 class CodeView extends StatelessWidget {
   final GTFSData gtfs;
@@ -17,61 +17,16 @@ class CodeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<InspectCubit, VehiclePosition?>(
-      builder: (context, selectedVehiclePosition) {
+    return BlocBuilder<InspectCubit, InspectScreenState>(
+      builder: (context, state) {
         return _CodeViewBody(
-          tripUpdates: _filterTripUpdates(selectedVehiclePosition),
-          vehiclePositions: _filterVehiclePositions(selectedVehiclePosition),
-          alerts: _filterAlerts(selectedVehiclePosition),
-          selectedVehiclePosition: selectedVehiclePosition,
+          tripUpdates: state.filteredTripUpdates,
+          vehiclePositions: state.filteredVehiclePositions,
+          alerts: state.filteredAlerts,
+          selectedVehiclePosition: state.selectedVehiclePosition,
         );
       },
     );
-  }
-
-  List<VehiclePosition> _filterVehiclePositions(
-    VehiclePosition? selectedVehiclePosition,
-  ) {
-    if (selectedVehiclePosition == null) {
-      return realtime.vehiclePositions;
-    } else {
-      return realtime.vehiclePositions
-          .where((v) => v.vehicle.id == selectedVehiclePosition.vehicle.id)
-          .toList();
-    }
-  }
-
-  List<TripUpdate> _filterTripUpdates(
-    VehiclePosition? selectedVehiclePosition,
-  ) {
-    if (selectedVehiclePosition == null) {
-      return realtime.tripUpdates;
-    } else {
-      return realtime.tripUpdates
-          .where((t) => t.vehicle.id == selectedVehiclePosition.vehicle.id)
-          .toList();
-    }
-  }
-
-  List<Alert> _filterAlerts(
-    VehiclePosition? selectedVehiclePosition,
-  ) {
-    if (selectedVehiclePosition == null) {
-      return realtime.alerts;
-    } else {
-      final tripId = selectedVehiclePosition.trip.tripId;
-      final routeId = gtfs.routesLookup[tripId]?.routeId;
-
-      return realtime.alerts
-          .where(
-            (a) => a.informedEntity
-                .where(
-                  (i) => i.trip.tripId == tripId || (i.trip.routeId == routeId),
-                )
-                .isNotEmpty,
-          )
-          .toList();
-    }
   }
 }
 

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gtfs_realtime_inspector/screens/input/feeds_input_screen.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/inspect_screen.dart';
-import 'package:gtfs_realtime_inspector/transit_cubit.dart';
 import 'package:gtfs_realtime_inspector/utils.dart';
 
 void main() {
@@ -36,15 +34,12 @@ class MyApp extends StatelessWidget {
       brightness: Brightness.dark,
     );
 
-    return BlocProvider(
-      create: (_) => InspectCubit(),
-      child: MaterialApp.router(
-        title: 'GTFS Realtime inspector',
-        theme: lightTheme,
-        darkTheme: darkTheme,
-        debugShowCheckedModeBanner: false,
-        routerConfig: _router,
-      ),
+    return MaterialApp.router(
+      title: 'GTFS Realtime inspector',
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      debugShowCheckedModeBanner: false,
+      routerConfig: _router,
     );
   }
 }
