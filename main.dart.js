@@ -79664,7 +79664,7 @@ uL(a){return this.a25(a)},
 a25(a){var s=0,r=A.a3(t.Sf),q,p,o,n,m
 var $async$uL=A.Z(function(b,c){if(b===1)return A.a0(c,r)
 while(true)switch(s){case 0:s=3
-return A.a6(A.aCL(A.fA("https://cors-proxy.vycius.workers.dev/?"+a,0,null)),$async$uL)
+return A.a6(A.aCL(A.fA("https://vycius.lt/cors-proxy/?"+a,0,null)),$async$uL)
 case 3:p=c.w
 o=A.axV()
 n=Math.min(67108864,p.length)
@@ -79700,7 +79700,7 @@ var $async$uJ=A.Z(function(b,c){if(b===1)return A.a0(c,r)
 while(true)switch(s){case 0:m=new A.ahV()
 l=A
 s=3
-return A.a6(A.aCL(A.fA("https://cors-proxy.vycius.workers.dev/?"+a,0,null)),$async$uJ)
+return A.a6(A.aCL(A.fA("https://vycius.lt/cors-proxy/?"+a,0,null)),$async$uJ)
 case 3:o=m.ae7(l.u2(c.w,0,null,0),null,!0)
 n=p.a_N(o)
 q=new A.Lp(p.a_I(o),n)
