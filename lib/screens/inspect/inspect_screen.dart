@@ -1,4 +1,5 @@
 import 'package:async/async.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/code_view.dart';
@@ -30,9 +31,9 @@ class _InspectScreenState extends State<InspectScreen> {
     return Scaffold(
       body: _TransitDataFutureBuilder(
         future: _transitDataMemo.runOnce(
-          () => TransitService().fetchTransitFeeds(
-            widget.gtfsUrl,
-            widget.gtfsRealtimeUrls,
+          () => compute(
+            _fetchTransitFeeds,
+            MapEntry(widget.gtfsUrl, widget.gtfsRealtimeUrls),
           ),
         ),
         builder: (context, data) {
@@ -40,6 +41,10 @@ class _InspectScreenState extends State<InspectScreen> {
         },
       ),
     );
+  }
+
+  Future<TransitData> _fetchTransitFeeds(MapEntry<String, List<String>> data) {
+    return TransitService().fetchTransitFeeds(data.key, data.value);
   }
 }
 
