@@ -36,12 +36,8 @@ class VehiclesMap extends StatelessWidget {
                   final vehicleDescriptor = vehiclePosition.hasVehicle()
                       ? vehiclePosition.vehicle
                       : null;
-
-                  final tripDescriptor =
-                      vehiclePosition.hasTrip() ? vehiclePosition.trip : null;
-                  return context.read<InspectCubit>().select(
+                  return context.read<InspectCubit>().selectVehicleDescriptor(
                         vehicleDescriptor,
-                        tripDescriptor,
                       );
                 },
                 child: _VehicleIcon(
@@ -66,6 +62,8 @@ class VehiclesMap extends StatelessWidget {
               (v) => v.vehicle == selectedVehicleDescriptor,
             )
             ?.position;
+
+        print('selectedVehicleDescriptor: $selectedVehicleDescriptor vehiclePosition: $vehiclePosition');
 
         if (vehiclePosition != null) {
           mapController.move(

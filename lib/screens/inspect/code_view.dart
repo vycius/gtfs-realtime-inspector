@@ -179,10 +179,7 @@ class _CodeTab<T> extends StatelessWidget {
           tileColor: theme['root']!.backgroundColor,
           trailing: route != null ? RouteAvatar(route: route) : null,
           onTap: () => vehicleDescriptor != null || tripDescriptor != null
-              ? context.read<InspectCubit>().select(
-                    vehicleDescriptor,
-                    tripDescriptor,
-                  )
+              ? _select(context, vehicleDescriptor, tripDescriptor)
               : null,
           title: HighlightView(
             json,
@@ -193,6 +190,18 @@ class _CodeTab<T> extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _select(
+    BuildContext context,
+    VehicleDescriptor? vehicleDescriptor,
+    TripDescriptor? tripDescriptor,
+  ) {
+    if (vehicleDescriptor != null) {
+      context.read<InspectCubit>().selectVehicleDescriptor(vehicleDescriptor);
+    } else if (tripDescriptor != null) {
+      context.read<InspectCubit>().selectTripDescriptor(tripDescriptor);
+    }
   }
 
   GTFSRoute? protoTripToRoute(TripDescriptor tripDescriptor) {

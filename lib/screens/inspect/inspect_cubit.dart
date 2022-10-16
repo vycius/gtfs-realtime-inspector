@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gtfs_realtime_bindings/gtfs_realtime_bindings.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/models.dart';
@@ -5,7 +6,37 @@ import 'package:gtfs_realtime_inspector/screens/inspect/models.dart';
 class InspectCubit extends Cubit<InspectScreenState> {
   InspectCubit(super.initialState);
 
-  void select(
+  void selectTripDescriptor(
+    TripDescriptor? tripDescriptor,
+  ) {
+    if (tripDescriptor == null) {
+      deselect();
+    } else {
+      _select(
+        _lookupVehicleDescriptor(tripDescriptor),
+        tripDescriptor,
+      );
+    }
+  }
+
+  void selectVehicleDescriptor(
+    VehicleDescriptor? vehicleDescriptor,
+  ) {
+    if (vehicleDescriptor == null) {
+      deselect();
+    } else {
+      _select(
+        vehicleDescriptor,
+        _lookupTripDescriptor(vehicleDescriptor),
+      );
+    }
+  }
+
+  void deselect() {
+    _select(null, null);
+  }
+
+  void _select(
     VehicleDescriptor? vehicleDescriptor,
     TripDescriptor? tripDescriptor,
   ) {
@@ -26,8 +57,21 @@ class InspectCubit extends Cubit<InspectScreenState> {
     );
   }
 
-  void deselect() {
-    select(null, null);
+  VehicleDescriptor? _lookupVehicleDescriptor(TripDescriptor tripDescriptor) {
+    return state.allVehiclePositions
+        .firstWhereOrNull(
+          (v) => v.hasVehicle() && v.hasTrip() && v.trip == tripDescriptor,
+        )
+        ?.vehicle;
+  }
+
+  TripDescriptor? _lookupTripDescriptor(VehicleDescriptor vehicleDescriptor) {
+    return state.allVehiclePositions
+        .firstWhereOrNull(
+          (v) =>
+              v.hasTrip() && v.hasVehicle() && v.vehicle == vehicleDescriptor,
+        )
+        ?.trip;
   }
 
   List<VehiclePosition> _filterVehiclePositions(
