@@ -23,7 +23,7 @@ class TransitService {
   }
 
   Future<FeedMessage> _fetchGtfRealtimeFeed(String gtfsRealtimeUrl) async {
-    final url = 'https://cors-proxy.vycius.workers.dev/?$gtfsRealtimeUrl';
+    final url = 'https://vycius.lt/cors-proxy/?$gtfsRealtimeUrl';
     final response = await http.get(Uri.parse(url));
     final message = FeedMessage.fromBuffer(response.bodyBytes);
 
@@ -61,7 +61,7 @@ class TransitService {
   }
 
   Future<GTFSData> _fetchGTFSFromUrl(String gtfsUrl) async {
-    final url = 'https://cors-proxy.vycius.workers.dev/?$gtfsUrl';
+    final url = 'https://vycius.lt/cors-proxy/?$gtfsUrl';
 
     final response = await http.get(Uri.parse(url));
 
