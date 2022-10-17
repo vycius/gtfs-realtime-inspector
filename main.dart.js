@@ -81248,7 +81248,7 @@ return A.a0($async$rL,r)},
 qw(a){return this.a87(a)},
 a87(a){var s=0,r=A.a1(t.Wd),q,p,o,n
 var $async$qw=A.X(function(b,c){if(b===1)return A.Z(c,r)
-while(true)switch(s){case 0:p=A.h7("https://vycius.lt/cors-proxy/?"+a,0,null)
+while(true)switch(s){case 0:p=A.h7("https://cors-proxy.vycius.lt/?"+a,0,null)
 s=3
 return A.a5(A.aVB(p),$async$qw)
 case 3:o=c
