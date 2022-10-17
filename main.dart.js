@@ -80973,13 +80973,13 @@ A.Nf.prototype={
 I(a){var s=A.ahK(B.V,B.of,B.eZ,null,A.awn()),r=A.ahK(B.U,B.of,B.eZ,null,A.awn())
 return new A.uY($.aHG(),"GTFS Realtime inspector",s,r,!1,null)}}
 A.asK.prototype={
-$2(a,b){var s,r,q=b.x,p=q.i(0,"gtfs_url")
-if(p==null)s=null
-else{p=A.a7D(p)
-s=p==null?null:A.agJ(p)}r=q.i(0,"gtfs_realtime_urls")
+$2(a,b){var s,r,q=null,p=b.x,o=p.i(0,"gtfs_url")
+if(o==null)s=q
+else{o=A.a7D(o)
+s=o==null?q:A.agJ(o)}r=p.i(0,"gtfs_realtime_urls")
 if(r==null)r=A.b([],t.s)
-p=t.s
-return new A.tU(s,r,A.k(["Vilnius, Lithuania",new A.eJ("https://stops.lt/vilnius/vilnius/gtfs.zip",A.b(["https://www.stops.lt/vilnius/trip_updates.pb","https://www.stops.lt/vilnius/vehicle_positions.pb","https://www.stops.lt/vilnius/service_alerts.pb"],p)),"Kaunas, Lithuania",new A.eJ("https://stops.lt/kaunas/kaunas/gtfs.zip",A.b(["https://www.stops.lt/kaunas/trip_updates.pb","https://www.stops.lt/kaunas/vehicle_positions.pb","https://www.stops.lt/kaunas/service_alerts.pb"],p)),"Klaip\u0117da, Lithuania",new A.eJ("https://www.stops.lt/klaipeda/klaipeda/gtfs.zip",A.b(["https://www.stops.lt/klaipeda/gtfs_realtime.pb"],p)),"Panev\u0117\u017eys, Lithuania",new A.eJ("https://www.stops.lt/panevezys/panevezys/gtfs.zip",A.b(["https://www.stops.lt/panevezys/gtfs_realtime.pb"],p)),"Netherlands",new A.eJ("https://gtfs.ovapi.nl/nl/gtfs-nl.zip",A.b(["https://gtfs.ovapi.nl/nl/tripUpdates.pb","https://gtfs.ovapi.nl/nl/vehiclePositions.pb","https://gtfs.ovapi.nl/nl/alerts.pb"],p))],t.N,t.AP),null)},
+o=t.s
+return new A.tU(s,r,A.k(["Vilnius, Lithuania",new A.eJ("https://stops.lt/vilnius/vilnius/gtfs.zip",A.b(["https://www.stops.lt/vilnius/trip_updates.pb","https://www.stops.lt/vilnius/vehicle_positions.pb","https://www.stops.lt/vilnius/service_alerts.pb"],o)),"Kaunas, Lithuania",new A.eJ("https://stops.lt/kaunas/kaunas/gtfs.zip",A.b(["https://www.stops.lt/kaunas/trip_updates.pb","https://www.stops.lt/kaunas/vehicle_positions.pb","https://www.stops.lt/kaunas/service_alerts.pb"],o)),"Klaip\u0117da, Lithuania",new A.eJ("https://www.stops.lt/klaipeda/klaipeda/gtfs.zip",A.b(["https://www.stops.lt/klaipeda/gtfs_realtime.pb"],o)),"Panev\u0117\u017eys, Lithuania",new A.eJ("https://www.stops.lt/panevezys/panevezys/gtfs.zip",A.b(["https://www.stops.lt/panevezys/gtfs_realtime.pb"],o)),"Netherlands",new A.eJ(q,A.b(["https://gtfs.ovapi.nl/nl/tripUpdates.pb","https://gtfs.ovapi.nl/nl/vehiclePositions.pb","https://gtfs.ovapi.nl/nl/alerts.pb"],o))],t.N,t.AP),q)},
 $S:492}
 A.asL.prototype={
 $2(a,b){var s,r=b.x,q=r.i(0,"gtfs_url")
