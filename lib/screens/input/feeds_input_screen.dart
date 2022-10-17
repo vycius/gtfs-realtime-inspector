@@ -139,7 +139,6 @@ class FeedsInputScreen extends StatelessWidget {
                                 ),
                                 child: ActionChip(
                                   label: Text(feed.key),
-                                  tooltip: 'Inspect',
                                   onPressed: () {
                                     final feedInput = feed.value;
 
