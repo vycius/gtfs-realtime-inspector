@@ -168,7 +168,7 @@ class _VehicleIcon extends StatelessWidget {
     final routeId = tripIdToRouteIdLookup[vehiclePosition.trip.tripId];
     final route = (routeId != null) ? routesLookup[routeId] : null;
 
-    final routeColor = route?.parsedRouteColor ?? Colors.indigo;
+    final routeColor = route?.routeColor ?? Colors.indigo;
 
     final angle = degToRadian(vehiclePosition.position.bearing) + pi * 3 / 4;
 
@@ -199,7 +199,7 @@ class _VehicleIcon extends StatelessWidget {
   }
 
   Widget _buildVehicleBody(GTFSRoute? route) {
-    final routeTextColor = route?.parsedRouteTextColor ?? Colors.white;
+    final routeTextColor = route?.routeTextColor ?? Colors.white;
 
     if (route == null) {
       return Icon(

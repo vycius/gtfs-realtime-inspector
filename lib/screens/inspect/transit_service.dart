@@ -5,6 +5,7 @@ import 'package:archive/archive.dart';
 import 'package:csv/csv.dart';
 import 'package:gtfs_realtime_bindings/gtfs_realtime_bindings.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/models.dart';
+import 'package:gtfs_realtime_inspector/utils.dart';
 import 'package:http/http.dart' as http;
 
 class TransitService {
@@ -129,11 +130,19 @@ class TransitService {
       archive,
       'routes.txt',
       (rowValues) {
+        final routeColorCode = rowValues.getValue<String>('route_color');
+        final routeTextColorCode = rowValues.getValue<String>(
+          'route_text_color',
+        );
+
         final route = GTFSRoute(
           routeId: rowValues.getRequiredValue('route_id'),
           routeShortName: rowValues.getValue('route_short_name'),
-          routeColor: rowValues.getValue('route_color'),
-          routeTextColor: rowValues.getValue('route_text_color'),
+          routeColor:
+              routeColorCode != null ? hexToColor(routeColorCode) : null,
+          routeTextColor: routeTextColorCode != null
+              ? hexToColor(routeTextColorCode)
+              : null,
         );
 
         return MapEntry(route.routeId, route);

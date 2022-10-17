@@ -38,43 +38,15 @@ class GTFSData {
 class GTFSRoute {
   final String routeId;
   final String? routeShortName;
-  final String? routeColor;
-  final String? routeTextColor;
+  final Color? routeColor;
+  final Color? routeTextColor;
 
-  GTFSRoute({
+  const GTFSRoute({
     required this.routeId,
     this.routeShortName,
     this.routeColor,
     this.routeTextColor,
   });
-
-  Color _hexToColor(String hexString) {
-    var hexColor = hexString;
-    if (hexColor.length == 6) {
-      hexColor = 'FF$hexColor';
-    }
-    if (hexColor.length == 8) {
-      return Color(int.parse('0x$hexColor'));
-    }
-
-    throw Exception('Unable to pass color $hexString');
-  }
-
-  Color? get parsedRouteColor {
-    if (routeColor != null) {
-      return _hexToColor(routeColor!);
-    }
-
-    return null;
-  }
-
-  Color? get parsedRouteTextColor {
-    if (routeTextColor != null) {
-      return _hexToColor(routeTextColor!);
-    }
-
-    return null;
-  }
 }
 
 class GTFSRealtimeData {
@@ -95,7 +67,7 @@ class TransitData {
   final GTFSData gtfs;
   final GTFSRealtimeData realtime;
 
-  TransitData({
+  const TransitData({
     required this.gtfsRealtimeUrls,
     required this.gtfs,
     required this.realtime,
