@@ -37,7 +37,7 @@ class FeedsInputScreen extends StatelessWidget {
       ],
     ),
     'Netherlands': FeedsInput(
-      gtfsUrl: 'https://gtfs.ovapi.nl/nl/gtfs-nl.zip',
+      gtfsUrl: null,
       gtfsRealtimeUrls: [
         'https://gtfs.ovapi.nl/nl/tripUpdates.pb',
         'https://gtfs.ovapi.nl/nl/vehiclePositions.pb',
