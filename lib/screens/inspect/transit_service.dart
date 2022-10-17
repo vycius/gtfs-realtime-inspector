@@ -23,7 +23,7 @@ class TransitService {
   }
 
   Future<http.Response> _makeRequestThroughCorsProxy(String url) async {
-    final uri = Uri.parse('https://vycius.lt/cors-proxy/?$url');
+    final uri = Uri.parse('https://cors-proxy.vycius.lt/?$url');
 
     final response = await http.get(uri);
 
