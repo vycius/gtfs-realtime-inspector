@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:gtfs_realtime_bindings/gtfs_realtime_bindings.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/inspect_cubit.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/models.dart';
@@ -25,45 +26,43 @@ class VehiclesMap extends StatefulWidget {
 class _VehiclesMapState extends State<VehiclesMap> {
   final _mapController = MapController();
 
-  MarkerLayer buildLayer() {
-    return MarkerLayer(
-      markers: [
-        for (final vehiclePosition in widget.vehiclePositions)
-          Marker(
-            key: Key('vehicle-${vehiclePosition.vehicle.id}'),
-            point: LatLng(
-              vehiclePosition.position.latitude,
-              vehiclePosition.position.longitude,
-            ),
-            anchorPos: AnchorPos.align(AnchorAlign.center),
-            builder: (context) {
-              return GestureDetector(
-                onTap: () {
-                  final vehicleDescriptor = vehiclePosition.hasVehicle()
-                      ? vehiclePosition.vehicle
-                      : null;
-
-                  final tripDescriptor =
-                      vehiclePosition.hasTrip() ? vehiclePosition.trip : null;
-
-                  return context.read<InspectCubit>().select(
-                        vehicleDescriptor,
-                        tripDescriptor,
-                      );
-                },
-                child: MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: _VehicleIcon(
-                    vehiclePosition: vehiclePosition,
-                    tripIdToRouteIdLookup: widget.tripIdToRouteIdLookup,
-                    routesLookup: widget.routesLookup,
-                  ),
-                ),
-              );
-            },
+  List<Marker> _buildMarkers() {
+    return [
+      for (final vehiclePosition in widget.vehiclePositions)
+        Marker(
+          key: ObjectKey(vehiclePosition),
+          point: LatLng(
+            vehiclePosition.position.latitude,
+            vehiclePosition.position.longitude,
           ),
-      ],
-    );
+          anchorPos: AnchorPos.align(AnchorAlign.center),
+          builder: (context) {
+            return GestureDetector(
+              onTap: () {
+                final vehicleDescriptor = vehiclePosition.hasVehicle()
+                    ? vehiclePosition.vehicle
+                    : null;
+
+                final tripDescriptor =
+                    vehiclePosition.hasTrip() ? vehiclePosition.trip : null;
+
+                return context.read<InspectCubit>().select(
+                      vehicleDescriptor,
+                      tripDescriptor,
+                    );
+              },
+              child: MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: _VehicleIcon(
+                  vehiclePosition: vehiclePosition,
+                  tripIdToRouteIdLookup: widget.tripIdToRouteIdLookup,
+                  routesLookup: widget.routesLookup,
+                ),
+              ),
+            );
+          },
+        ),
+    ];
   }
 
   @override
@@ -100,7 +99,24 @@ class _VehiclesMapState extends State<VehiclesMap> {
             urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
             userAgentPackageName: 'lt.transit.transit',
           ),
-          buildLayer(),
+          MarkerClusterLayerWidget(
+            options: MarkerClusterLayerOptions(
+              markers: _buildMarkers(),
+              anchor: AnchorPos.align(AnchorAlign.center),
+              disableClusteringAtZoom: 13,
+              builder: (BuildContext context, List<Marker> markers) {
+                return FloatingActionButton(
+                  onPressed: null,
+                  backgroundColor: Colors.teal,
+                  foregroundColor: Colors.white,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(markers.length.toString()),
+                  ),
+                );
+              },
+            ),
+          ),
           AttributionWidget.defaultWidget(
             source: 'OpenStreetMap contributors',
           ),

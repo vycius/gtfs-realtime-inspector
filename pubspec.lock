@@ -15,6 +15,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.1.0"
+  animated_stack_widget:
+    dependency: transitive
+    description:
+      name: animated_stack_widget
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   archive:
     dependency: "direct main"
     description:
@@ -272,6 +279,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0"
+  flutter_map_marker_cluster:
+    dependency: "direct main"
+    description:
+      name: flutter_map_marker_cluster
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
+  flutter_map_marker_popup:
+    dependency: transitive
+    description:
+      name: flutter_map_marker_popup
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter

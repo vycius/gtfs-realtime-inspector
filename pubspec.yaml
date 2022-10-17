@@ -37,6 +37,7 @@ dependencies:
   flutter_form_bloc: ^0.30.1
   flutter_highlight: ^0.7.0
   flutter_map: ^3.0.0
+  flutter_map_marker_cluster: ^1.0.1
   freezed_annotation: ^2.2.0
   go_router: ^5.1.0
   gtfs_realtime_bindings: ^1.0.1
