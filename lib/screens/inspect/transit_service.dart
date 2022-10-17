@@ -132,7 +132,6 @@ class TransitService {
         final route = GTFSRoute(
           routeId: rowValues.getRequiredValue('route_id'),
           routeShortName: rowValues.getValue('route_short_name'),
-          routeLongName: rowValues.getValue('route_long_name'),
           routeColor: rowValues.getValue('route_color'),
           routeTextColor: rowValues.getValue('route_text_color'),
         );

@@ -208,10 +208,8 @@ class _VehicleIcon extends StatelessWidget {
         color: routeTextColor,
       );
     } else {
-      final text = route.routeShortName ?? route.routeLongName ?? '?';
-
       return Text(
-        text,
+        route.routeShortName ?? '?',
         maxLines: 1,
         style: TextStyle(color: routeTextColor),
       );

@@ -38,14 +38,12 @@ class GTFSData {
 class GTFSRoute {
   final String routeId;
   final String? routeShortName;
-  final String? routeLongName;
   final String? routeColor;
   final String? routeTextColor;
 
   GTFSRoute({
     required this.routeId,
     this.routeShortName,
-    this.routeLongName,
     this.routeColor,
     this.routeTextColor,
   });
