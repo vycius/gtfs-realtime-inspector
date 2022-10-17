@@ -138,7 +138,7 @@ class _CodeViewBody extends StatelessWidget {
 
     if (selectedVehicleDescriptor != null) {
       textParts.add(
-        'Vehicle: ${selectedVehicleDescriptor?.label.emptyToNull() ?? selectedVehicleDescriptor?.id}',
+        'Vehicle: ${selectedVehicleDescriptor?.id.emptyToNull() ?? selectedVehicleDescriptor?.label}',
       );
     }
     if (selectedTripDescriptor != null) {
