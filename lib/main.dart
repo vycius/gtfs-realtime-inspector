@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // ignore: depend_on_referenced_packages
@@ -11,8 +12,8 @@ import 'package:gtfs_realtime_inspector/screens/inspect/inspect_screen.dart';
 import 'package:gtfs_realtime_inspector/utils.dart';
 
 void main() {
+  if (!kDebugMode) usePathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
-  usePathUrlStrategy();
 
   runApp(const MyApp());
 }
