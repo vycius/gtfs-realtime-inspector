@@ -46,7 +46,6 @@ class MyApp extends StatelessWidget {
 }
 
 final GoRouter _router = GoRouter(
-  debugLogDiagnostics: true,
   routes: <GoRoute>[
     GoRoute(
       name: 'input',
