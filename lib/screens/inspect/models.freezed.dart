@@ -16,7 +16,6 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$InspectScreenState {
-  String get gtfsUrl => throw _privateConstructorUsedError;
   List<String> get gtfsRealtimeUrls => throw _privateConstructorUsedError;
   GTFSData get gtfs => throw _privateConstructorUsedError;
   List<TripUpdate> get allTripUpdates => throw _privateConstructorUsedError;
@@ -45,8 +44,7 @@ abstract class $InspectScreenStateCopyWith<$Res> {
       _$InspectScreenStateCopyWithImpl<$Res, InspectScreenState>;
   @useResult
   $Res call(
-      {String gtfsUrl,
-      List<String> gtfsRealtimeUrls,
+      {List<String> gtfsRealtimeUrls,
       GTFSData gtfs,
       List<TripUpdate> allTripUpdates,
       List<VehiclePosition> allVehiclePositions,
@@ -71,7 +69,6 @@ class _$InspectScreenStateCopyWithImpl<$Res, $Val extends InspectScreenState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? gtfsUrl = null,
     Object? gtfsRealtimeUrls = null,
     Object? gtfs = null,
     Object? allTripUpdates = null,
@@ -84,10 +81,6 @@ class _$InspectScreenStateCopyWithImpl<$Res, $Val extends InspectScreenState>
     Object? selectedTripDescriptor = freezed,
   }) {
     return _then(_value.copyWith(
-      gtfsUrl: null == gtfsUrl
-          ? _value.gtfsUrl
-          : gtfsUrl // ignore: cast_nullable_to_non_nullable
-              as String,
       gtfsRealtimeUrls: null == gtfsRealtimeUrls
           ? _value.gtfsRealtimeUrls
           : gtfsRealtimeUrls // ignore: cast_nullable_to_non_nullable
@@ -141,8 +134,7 @@ abstract class _$$_InspectScreenStateCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String gtfsUrl,
-      List<String> gtfsRealtimeUrls,
+      {List<String> gtfsRealtimeUrls,
       GTFSData gtfs,
       List<TripUpdate> allTripUpdates,
       List<VehiclePosition> allVehiclePositions,
@@ -165,7 +157,6 @@ class __$$_InspectScreenStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? gtfsUrl = null,
     Object? gtfsRealtimeUrls = null,
     Object? gtfs = null,
     Object? allTripUpdates = null,
@@ -178,10 +169,6 @@ class __$$_InspectScreenStateCopyWithImpl<$Res>
     Object? selectedTripDescriptor = freezed,
   }) {
     return _then(_$_InspectScreenState(
-      gtfsUrl: null == gtfsUrl
-          ? _value.gtfsUrl
-          : gtfsUrl // ignore: cast_nullable_to_non_nullable
-              as String,
       gtfsRealtimeUrls: null == gtfsRealtimeUrls
           ? _value._gtfsRealtimeUrls
           : gtfsRealtimeUrls // ignore: cast_nullable_to_non_nullable
@@ -230,8 +217,7 @@ class __$$_InspectScreenStateCopyWithImpl<$Res>
 
 class _$_InspectScreenState implements _InspectScreenState {
   const _$_InspectScreenState(
-      {required this.gtfsUrl,
-      required final List<String> gtfsRealtimeUrls,
+      {required final List<String> gtfsRealtimeUrls,
       required this.gtfs,
       required final List<TripUpdate> allTripUpdates,
       required final List<VehiclePosition> allVehiclePositions,
@@ -249,8 +235,6 @@ class _$_InspectScreenState implements _InspectScreenState {
         _filteredVehiclePositions = filteredVehiclePositions,
         _filteredAlerts = filteredAlerts;
 
-  @override
-  final String gtfsUrl;
   final List<String> _gtfsRealtimeUrls;
   @override
   List<String> get gtfsRealtimeUrls {
@@ -309,7 +293,7 @@ class _$_InspectScreenState implements _InspectScreenState {
 
   @override
   String toString() {
-    return 'InspectScreenState(gtfsUrl: $gtfsUrl, gtfsRealtimeUrls: $gtfsRealtimeUrls, gtfs: $gtfs, allTripUpdates: $allTripUpdates, allVehiclePositions: $allVehiclePositions, allAlerts: $allAlerts, filteredTripUpdates: $filteredTripUpdates, filteredVehiclePositions: $filteredVehiclePositions, filteredAlerts: $filteredAlerts, selectedVehicleDescriptor: $selectedVehicleDescriptor, selectedTripDescriptor: $selectedTripDescriptor)';
+    return 'InspectScreenState(gtfsRealtimeUrls: $gtfsRealtimeUrls, gtfs: $gtfs, allTripUpdates: $allTripUpdates, allVehiclePositions: $allVehiclePositions, allAlerts: $allAlerts, filteredTripUpdates: $filteredTripUpdates, filteredVehiclePositions: $filteredVehiclePositions, filteredAlerts: $filteredAlerts, selectedVehicleDescriptor: $selectedVehicleDescriptor, selectedTripDescriptor: $selectedTripDescriptor)';
   }
 
   @override
@@ -317,7 +301,6 @@ class _$_InspectScreenState implements _InspectScreenState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_InspectScreenState &&
-            (identical(other.gtfsUrl, gtfsUrl) || other.gtfsUrl == gtfsUrl) &&
             const DeepCollectionEquality()
                 .equals(other._gtfsRealtimeUrls, _gtfsRealtimeUrls) &&
             (identical(other.gtfs, gtfs) || other.gtfs == gtfs) &&
@@ -343,7 +326,6 @@ class _$_InspectScreenState implements _InspectScreenState {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      gtfsUrl,
       const DeepCollectionEquality().hash(_gtfsRealtimeUrls),
       gtfs,
       const DeepCollectionEquality().hash(_allTripUpdates),
@@ -365,8 +347,7 @@ class _$_InspectScreenState implements _InspectScreenState {
 
 abstract class _InspectScreenState implements InspectScreenState {
   const factory _InspectScreenState(
-      {required final String gtfsUrl,
-      required final List<String> gtfsRealtimeUrls,
+      {required final List<String> gtfsRealtimeUrls,
       required final GTFSData gtfs,
       required final List<TripUpdate> allTripUpdates,
       required final List<VehiclePosition> allVehiclePositions,
@@ -377,8 +358,6 @@ abstract class _InspectScreenState implements InspectScreenState {
       final VehicleDescriptor? selectedVehicleDescriptor,
       final TripDescriptor? selectedTripDescriptor}) = _$_InspectScreenState;
 
-  @override
-  String get gtfsUrl;
   @override
   List<String> get gtfsRealtimeUrls;
   @override

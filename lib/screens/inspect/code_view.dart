@@ -16,7 +16,6 @@ class CodeView extends StatelessWidget {
     return BlocBuilder<InspectCubit, InspectScreenState>(
       builder: (context, state) {
         return _CodeViewBody(
-          gtfsUrl: state.gtfsUrl,
           gtfs: state.gtfs,
           gtfsRealtimeUrls: state.gtfsRealtimeUrls,
           tripUpdates: state.filteredTripUpdates,
@@ -32,7 +31,6 @@ class CodeView extends StatelessWidget {
 
 class _CodeViewBody extends StatelessWidget {
   final GTFSData gtfs;
-  final String gtfsUrl;
   final List<String> gtfsRealtimeUrls;
 
   final List<TripUpdate> tripUpdates;
@@ -42,7 +40,6 @@ class _CodeViewBody extends StatelessWidget {
   final TripDescriptor? selectedTripDescriptor;
 
   const _CodeViewBody({
-    required this.gtfsUrl,
     required this.gtfsRealtimeUrls,
     required this.tripUpdates,
     required this.vehiclePositions,
@@ -81,7 +78,7 @@ class _CodeViewBody extends StatelessWidget {
                   context.namedLocation(
                     'info',
                     queryParams: {
-                      'gtfs_url': gtfsUrl,
+                      'gtfs_url': gtfs.url,
                       'gtfs_realtime_urls': gtfsRealtimeUrls,
                     },
                   ),

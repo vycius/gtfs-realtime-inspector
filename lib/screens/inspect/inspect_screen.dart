@@ -10,7 +10,7 @@ import 'package:gtfs_realtime_inspector/screens/inspect/vehicles_map.dart';
 import 'package:split_view/split_view.dart';
 
 class InspectScreen extends StatefulWidget {
-  final String gtfsUrl;
+  final String? gtfsUrl;
   final List<String> gtfsRealtimeUrls;
 
   const InspectScreen({
@@ -33,7 +33,7 @@ class _InspectScreenState extends State<InspectScreen> {
         future: _transitDataMemo.runOnce(
           () => compute(
             _fetchTransitFeeds,
-            MapEntry(widget.gtfsUrl, widget.gtfsRealtimeUrls),
+            '',
           ),
         ),
         builder: (context, data) {
@@ -43,8 +43,11 @@ class _InspectScreenState extends State<InspectScreen> {
     );
   }
 
-  Future<TransitData> _fetchTransitFeeds(MapEntry<String, List<String>> data) {
-    return TransitService().fetchTransitFeeds(data.key, data.value);
+  Future<TransitData> _fetchTransitFeeds(String s) {
+    return TransitService().fetchTransitFeeds(
+      widget.gtfsUrl,
+      widget.gtfsRealtimeUrls,
+    );
   }
 }
 
@@ -58,7 +61,6 @@ class _InspectScreenBody extends StatelessWidget {
     return BlocProvider(
       create: (_) {
         final state = InspectScreenState(
-          gtfsUrl: data.gtfsUrl,
           gtfsRealtimeUrls: data.gtfsRealtimeUrls,
           gtfs: data.gtfs,
           allTripUpdates: data.realtime.tripUpdates,

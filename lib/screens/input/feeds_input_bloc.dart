@@ -11,7 +11,7 @@ class FeedsInputBloc extends FormBloc<FeedsInput, String> {
 
   late final gtfsUrl = TextFieldBloc(
     initialValue: initialGtfsUrl ?? '',
-    validators: [FieldBlocValidators.required, urlValidator],
+    validators: [urlValidator],
   );
   late final gtfsRealtime1Url = TextFieldBloc(
     initialValue: initialGtfsRealtimeUrls.elementAtOrNull(0) ?? '',
@@ -41,10 +41,10 @@ class FeedsInputBloc extends FormBloc<FeedsInput, String> {
   }
 
   void updateValues(
-    String gtfsUrlValue,
+    String? gtfsUrlValue,
     List<String> gtfsRealtimeUrlsValue,
   ) {
-    gtfsUrl.updateValue(gtfsUrlValue);
+    gtfsUrl.updateValue(gtfsUrlValue ?? '');
     gtfsRealtime1Url.updateValue(
       gtfsRealtimeUrlsValue.elementAtOrNull(0) ?? '',
     );
@@ -64,9 +64,11 @@ class FeedsInputBloc extends FormBloc<FeedsInput, String> {
       gtfsRealtime3Url.value,
     ].where((u) => u.isNotEmpty).toList();
 
+    final gtfs = gtfsUrl.value.isNotEmpty ? gtfsUrl.value : null;
+
     emitSuccess(
       successResponse: FeedsInput(
-        gtfsUrl: gtfsUrl.value,
+        gtfsUrl: gtfs,
         gtfsRealtimeUrls: gtfsRealtimeUrls,
       ),
     );

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InfoScreen extends StatelessWidget {
-  final String gtfsUrl;
+  final String? gtfsUrl;
   final List<String> gtfsRealtimeUrls;
 
   const InfoScreen({
@@ -22,18 +22,19 @@ class InfoScreen extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 600),
           child: ListView(
             children: [
-              ListTile(
-                title: const Text('GTFS'),
-                subtitle: Text(gtfsUrl),
-                onTap: _downloadGTFS,
-                trailing: const Icon(Icons.download),
-              ),
+              if (gtfsUrl != null)
+                ListTile(
+                  title: const Text('GTFS'),
+                  subtitle: Text(gtfsUrl!),
+                  onTap: _downloadGTFS,
+                  trailing: const Icon(Icons.download),
+                ),
               for (final rt in gtfsRealtimeUrls)
                 ListTile(
                   title: const Text('GTFS Realtime'),
                   subtitle: Text(rt),
                   trailing: const Icon(Icons.open_in_new),
-                  onTap: () => _openValidator(rt),
+                  onTap: gtfsUrl != null ? () => _openValidator(rt) : null,
                 ),
               ListTile(
                 leading: const Icon(Icons.code),
@@ -72,6 +73,6 @@ class InfoScreen extends StatelessWidget {
   }
 
   Future<bool> _downloadGTFS() {
-    return launchUrl(Uri.parse(gtfsUrl));
+    return launchUrl(Uri.parse(gtfsUrl!));
   }
 }

@@ -8,7 +8,6 @@ part 'models.freezed.dart';
 @freezed
 class InspectScreenState with _$InspectScreenState {
   const factory InspectScreenState({
-    required String gtfsUrl,
     required List<String> gtfsRealtimeUrls,
     required GTFSData gtfs,
     required List<TripUpdate> allTripUpdates,
@@ -23,12 +22,16 @@ class InspectScreenState with _$InspectScreenState {
 }
 
 class GTFSData {
+  final String? url;
   final Map<String, GTFSRoute> routesLookup;
   final Map<String, String> tripIdToRouteIdLookup;
+  final String? warning;
 
   const GTFSData({
+    required this.url,
     required this.tripIdToRouteIdLookup,
     required this.routesLookup,
+    this.warning,
   });
 }
 
@@ -89,14 +92,12 @@ class GTFSRealtimeData {
 }
 
 class TransitData {
-  final String gtfsUrl;
   final List<String> gtfsRealtimeUrls;
 
   final GTFSData gtfs;
   final GTFSRealtimeData realtime;
 
   TransitData({
-    required this.gtfsUrl,
     required this.gtfsRealtimeUrls,
     required this.gtfs,
     required this.realtime,

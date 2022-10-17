@@ -1,5 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gtfs_realtime_inspector/extensions.dart';
 import 'package:gtfs_realtime_inspector/screens/info/info_screen.dart';
 import 'package:gtfs_realtime_inspector/screens/input/feeds_input_screen.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/inspect_screen.dart';
@@ -53,7 +55,7 @@ final GoRouter _router = GoRouter(
       builder: (BuildContext context, GoRouterState state) {
         final queryParams = state.queryParametersAll;
 
-        final gtfsUrl = queryParams['gtfs_url']?.first;
+        final gtfsUrl = queryParams['gtfs_url']?.firstOrNull?.emptyToNull();
         final gtfsRealtimeUrls = queryParams['gtfs_realtime_urls'] ?? [];
 
         return FeedsInputScreen(
@@ -68,7 +70,7 @@ final GoRouter _router = GoRouter(
           builder: (BuildContext context, GoRouterState state) {
             final queryParams = state.queryParametersAll;
 
-            final gtfsUrl = queryParams['gtfs_url']!.first;
+            final gtfsUrl = queryParams['gtfs_url']?.firstOrNull?.emptyToNull();
             final gtfsRealtimeUrls = queryParams['gtfs_realtime_urls']!;
 
             return InspectScreen(
@@ -80,10 +82,11 @@ final GoRouter _router = GoRouter(
             if (state.name == 'inspect') {
               final queryParams = state.queryParametersAll;
 
-              final gtfsUrl = queryParams['gtfs_url']?.first;
+              final gtfsUrl =
+                  queryParams['gtfs_url']?.firstOrNull?.emptyToNull();
               final gtfsRealtimeUrls = queryParams['gtfs_realtime_urls'];
 
-              if (gtfsUrl == null || !isValidUrl(gtfsUrl)) {
+              if (gtfsUrl != null && !isValidUrl(gtfsUrl)) {
                 return '/';
               }
 
@@ -103,7 +106,8 @@ final GoRouter _router = GoRouter(
               pageBuilder: (BuildContext context, GoRouterState state) {
                 final queryParams = state.queryParametersAll;
 
-                final gtfsUrl = queryParams['gtfs_url']!.first;
+                final gtfsUrl =
+                    queryParams['gtfs_url']?.firstOrNull?.emptyToNull();
                 final gtfsRealtimeUrls = queryParams['gtfs_realtime_urls']!;
 
                 return MaterialPage(

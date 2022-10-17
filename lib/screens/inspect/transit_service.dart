@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:archive/archive.dart';
 import 'package:csv/csv.dart';
@@ -8,23 +9,36 @@ import 'package:http/http.dart' as http;
 
 class TransitService {
   Future<TransitData> fetchTransitFeeds(
-    String gtfsUrl,
+    String? gtfsUrl,
     List<String> gtfsRealtimeUrls,
   ) async {
     final gtfsData = await _fetchGTFSFromUrl(gtfsUrl);
     final gtfsRealtimeData = await _fetchGtfRealtimeData(gtfsRealtimeUrls);
 
     return TransitData(
-      gtfsUrl: gtfsUrl,
       gtfsRealtimeUrls: gtfsRealtimeUrls,
       gtfs: gtfsData,
       realtime: gtfsRealtimeData,
     );
   }
 
+  Future<http.Response> _makeRequestThroughCorsProxy(String url) async {
+    final uri = Uri.parse('https://vycius.lt/cors-proxy/?$url');
+
+    final response = await http.get(uri);
+
+    if (response.statusCode < 400) {
+      return response;
+    } else {
+      throw HttpException(
+        'Status code ${response.statusCode} while loading $url',
+        uri: uri,
+      );
+    }
+  }
+
   Future<FeedMessage> _fetchGtfRealtimeFeed(String gtfsRealtimeUrl) async {
-    final url = 'https://vycius.lt/cors-proxy/?$gtfsRealtimeUrl';
-    final response = await http.get(Uri.parse(url));
+    final response = await _makeRequestThroughCorsProxy(gtfsRealtimeUrl);
     final message = FeedMessage.fromBuffer(response.bodyBytes);
 
     return message;
@@ -60,23 +74,39 @@ class TransitService {
     });
   }
 
-  Future<GTFSData> _fetchGTFSFromUrl(String gtfsUrl) async {
-    final url = 'https://vycius.lt/cors-proxy/?$gtfsUrl';
+  Future<GTFSData> _fetchGTFSFromUrl(String? gtfsUrl) async {
+    if (gtfsUrl == null) {
+      return GTFSData(
+        url: gtfsUrl,
+        tripIdToRouteIdLookup: {},
+        routesLookup: {},
+      );
+    } else {
+      try {
+        final response = await _makeRequestThroughCorsProxy(gtfsUrl);
 
-    final response = await http.get(Uri.parse(url));
+        final archive = ZipDecoder().decodeBytes(
+          response.bodyBytes,
+          verify: true,
+        );
 
-    final archive = ZipDecoder().decodeBytes(
-      response.bodyBytes,
-      verify: true,
-    );
+        final tripIdToRouteIdLookup = _buildTripIdToRouteIdLookup(archive);
+        final routesLookup = _buildRoutesLookup(archive);
 
-    final tripIdToRouteIdLookup = _buildTripIdToRouteIdLookup(archive);
-    final routesLookup = _buildRoutesLookup(archive);
-
-    return GTFSData(
-      tripIdToRouteIdLookup: tripIdToRouteIdLookup,
-      routesLookup: routesLookup,
-    );
+        return GTFSData(
+          url: gtfsUrl,
+          tripIdToRouteIdLookup: tripIdToRouteIdLookup,
+          routesLookup: routesLookup,
+        );
+      } on Exception catch (ex) {
+        return GTFSData(
+          url: gtfsUrl,
+          tripIdToRouteIdLookup: {},
+          routesLookup: {},
+          warning: 'Unable to load GTFS: $ex',
+        );
+      }
+    }
   }
 
   Map<String, String> _buildTripIdToRouteIdLookup(Archive archive) {

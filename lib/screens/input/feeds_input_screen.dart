@@ -87,25 +87,25 @@ class FeedsInputScreen extends StatelessWidget {
                         bloc: formBloc.gtfsUrl,
                         labelText: 'GTFS URL',
                         hintText: 'https://example.com/gtfs.zip',
-                        isRequired: true,
+                        helperText:
+                            'If GTFS provided, additional information will be shown',
                       ),
                       _UrlInputField(
                         bloc: formBloc.gtfsRealtime1Url,
                         labelText: 'GTFS REALTIME URL',
                         hintText: 'https://example.com/trip_updates.pb',
-                        isRequired: true,
+                        helperText:
+                            'At least one GTFS Realtime feed must be provided',
                       ),
                       _UrlInputField(
                         bloc: formBloc.gtfsRealtime2Url,
                         labelText: 'GTFS REALTIME URL',
                         hintText: 'https://example.com/vehicle_positions.pb',
-                        isRequired: false,
                       ),
                       _UrlInputField(
                         bloc: formBloc.gtfsRealtime3Url,
                         labelText: 'GTFS REALTIME URL',
                         hintText: 'https://example.com/service_alerts.pb',
-                        isRequired: false,
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 16),
@@ -125,7 +125,7 @@ class FeedsInputScreen extends StatelessWidget {
                             for (final feed in _exampleFeeds.entries)
                               Padding(
                                 padding: const EdgeInsets.symmetric(
-                                  vertical: 8,
+                                  vertical: 6,
                                   horizontal: 4,
                                 ),
                                 child: ActionChip(
@@ -157,7 +157,7 @@ class FeedsInputScreen extends StatelessWidget {
 
   void _inspectFeeds(
     BuildContext context,
-    String gtfsUrl,
+    String? gtfsUrl,
     List<String> gtfsRealtimeUrls,
   ) {
     context.push(
@@ -176,13 +176,13 @@ class _UrlInputField extends StatelessWidget {
   final TextFieldBloc bloc;
   final String labelText;
   final String hintText;
-  final bool isRequired;
+  final String? helperText;
 
   const _UrlInputField({
     required this.bloc,
     required this.labelText,
     required this.hintText,
-    required this.isRequired,
+    this.helperText,
   });
 
   @override
@@ -192,7 +192,7 @@ class _UrlInputField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
-        helperText: isRequired ? 'Required' : null,
+        helperText: helperText,
       ),
       keyboardType: TextInputType.url,
     );
@@ -200,7 +200,7 @@ class _UrlInputField extends StatelessWidget {
 }
 
 class FeedsInput {
-  final String gtfsUrl;
+  final String? gtfsUrl;
   final List<String> gtfsRealtimeUrls;
 
   FeedsInput({
