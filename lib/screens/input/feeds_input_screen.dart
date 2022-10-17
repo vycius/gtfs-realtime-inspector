@@ -44,6 +44,15 @@ class FeedsInputScreen extends StatelessWidget {
         'https://gtfs.ovapi.nl/nl/alerts.pb',
       ],
     ),
+    'Norway': FeedsInput(
+      gtfsUrl:
+          'https://storage.googleapis.com/marduk-production/outbound/gtfs/rb_norway-aggregated-gtfs-basic.zip',
+      gtfsRealtimeUrls: [
+        'https://api.entur.io/realtime/v1/gtfs-rt/trip-updates',
+        'https://api.entur.io/realtime/v1/gtfs-rt/vehicle-positions',
+        'https://api.entur.io/realtime/v1/gtfs-rt/alerts',
+      ],
+    ),
   };
 
   FeedsInputScreen({
