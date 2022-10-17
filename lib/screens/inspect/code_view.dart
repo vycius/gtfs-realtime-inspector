@@ -10,6 +10,7 @@ import 'package:gtfs_realtime_bindings/gtfs_realtime_bindings.dart';
 import 'package:gtfs_realtime_inspector/extensions.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/inspect_cubit.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/models.dart';
+import 'package:gtfs_realtime_inspector/utils.dart';
 
 class CodeView extends StatelessWidget {
   @override
@@ -100,6 +101,9 @@ class _CodeViewBody extends StatelessWidget {
                   vehicleDescriptorLookup: (e) =>
                       e.hasVehicle() ? e.vehicle : null,
                   tripDescriptorLookup: (e) => e.hasTrip() ? e.trip : null,
+                  tooltipMessageLookup: (e) => e.hasTimestamp()
+                      ? timestampToFormattedDateTime(e.timestamp.toInt())
+                      : null,
                 ),
                 _CodeTab<TripUpdate>(
                   gtfs: gtfs,
@@ -108,6 +112,9 @@ class _CodeViewBody extends StatelessWidget {
                   vehicleDescriptorLookup: (e) =>
                       e.hasVehicle() ? e.vehicle : null,
                   tripDescriptorLookup: (e) => e.hasTrip() ? e.trip : null,
+                  tooltipMessageLookup: (e) => e.hasTimestamp()
+                      ? timestampToFormattedDateTime(e.timestamp.toInt())
+                      : null,
                 ),
                 _CodeTab<Alert>(
                   gtfs: gtfs,
@@ -115,6 +122,15 @@ class _CodeViewBody extends StatelessWidget {
                   protoJsonLookup: (e) => e.toProto3Json(),
                   vehicleDescriptorLookup: (e) => null,
                   tripDescriptorLookup: (e) => null,
+                  tooltipMessageLookup: (e) => e.activePeriod.isNotEmpty
+                      ? e.activePeriod
+                          .map(
+                            (p) =>
+                                '${timestampToFormattedDateTime(p.start.toInt())} '
+                                '- ${timestampToFormattedDateTime(p.end.toInt())}',
+                          )
+                          .join('\n')
+                      : null,
                 ),
               ],
             ),
@@ -160,6 +176,7 @@ class _CodeTab<T> extends StatelessWidget {
   final Object? Function(T entity) protoJsonLookup;
   final VehicleDescriptor? Function(T entity) vehicleDescriptorLookup;
   final TripDescriptor? Function(T entity) tripDescriptorLookup;
+  final String? Function(T entity) tooltipMessageLookup;
 
   const _CodeTab({
     super.key,
@@ -168,6 +185,7 @@ class _CodeTab<T> extends StatelessWidget {
     required this.protoJsonLookup,
     required this.vehicleDescriptorLookup,
     required this.tripDescriptorLookup,
+    required this.tooltipMessageLookup,
   });
 
   @override
@@ -187,11 +205,12 @@ class _CodeTab<T> extends StatelessWidget {
 
         final vehicleDescriptor = vehicleDescriptorLookup(entity);
         final tripDescriptor = tripDescriptorLookup(entity);
+        final tooltipMessage = tooltipMessageLookup(entity);
 
         final route =
             tripDescriptor != null ? protoTripToRoute(tripDescriptor) : null;
 
-        return ListTile(
+        final tile = ListTile(
           key: ObjectKey(entity),
           tileColor: theme['root']!.backgroundColor,
           trailing: route != null ? RouteAvatar(route: route) : null,
@@ -205,6 +224,16 @@ class _CodeTab<T> extends StatelessWidget {
             theme: theme,
           ),
         );
+
+        if (tooltipMessage != null) {
+          return Tooltip(
+            message: tooltipMessage,
+            preferBelow: true,
+            child: tile,
+          );
+        } else {
+          return tile;
+        }
       },
     );
   }

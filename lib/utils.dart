@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter_form_bloc/flutter_form_bloc.dart';
+
 bool isValidUrl(String url) {
   final uri = Uri.tryParse(url);
 
@@ -26,4 +28,11 @@ Color hexToColor(String hexString) {
   }
 
   throw Exception('Unable to pass color $hexString');
+}
+
+String timestampToFormattedDateTime(int timestamp) {
+  final dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+  final dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+
+  return dateFormat.format(dateTime.toLocal());
 }

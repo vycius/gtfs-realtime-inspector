@@ -10,10 +10,14 @@ import 'package:gtfs_realtime_inspector/screens/info/info_screen.dart';
 import 'package:gtfs_realtime_inspector/screens/input/feeds_input_screen.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/inspect_screen.dart';
 import 'package:gtfs_realtime_inspector/utils.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl_browser.dart';
 
-void main() {
+Future<void> main() async {
   if (!kDebugMode) usePathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
+
+  await initializeDateFormatting(await findSystemLocale());
 
   runApp(const MyApp());
 }
