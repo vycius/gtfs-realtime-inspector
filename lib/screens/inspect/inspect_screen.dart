@@ -51,24 +51,43 @@ class _InspectScreenState extends State<InspectScreen> {
   }
 }
 
-class _InspectScreenBody extends StatelessWidget {
+class _InspectScreenBody extends StatefulWidget {
   final TransitData data;
 
   const _InspectScreenBody({required this.data});
+
+  @override
+  State<_InspectScreenBody> createState() => _InspectScreenBodyState();
+}
+
+class _InspectScreenBodyState extends State<_InspectScreenBody> {
+  @override
+  void initState() {
+    super.initState();
+
+    final warning = widget.data.gtfs.warning;
+    if (warning != null) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(warning)),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) {
         final state = InspectScreenState(
-          gtfsRealtimeUrls: data.gtfsRealtimeUrls,
-          gtfs: data.gtfs,
-          allTripUpdates: data.realtime.tripUpdates,
-          allVehiclePositions: data.realtime.vehiclePositions,
-          allAlerts: data.realtime.alerts,
-          filteredTripUpdates: data.realtime.tripUpdates,
-          filteredVehiclePositions: data.realtime.vehiclePositions,
-          filteredAlerts: data.realtime.alerts,
+          gtfsRealtimeUrls: widget.data.gtfsRealtimeUrls,
+          gtfs: widget.data.gtfs,
+          allTripUpdates: widget.data.realtime.tripUpdates,
+          allVehiclePositions: widget.data.realtime.vehiclePositions,
+          allAlerts: widget.data.realtime.alerts,
+          filteredTripUpdates: widget.data.realtime.tripUpdates,
+          filteredVehiclePositions: widget.data.realtime.vehiclePositions,
+          filteredAlerts: widget.data.realtime.alerts,
         );
         return InspectCubit(state);
       },
@@ -83,9 +102,9 @@ class _InspectScreenBody extends StatelessWidget {
         children: [
           CodeView(),
           VehiclesMap(
-            vehiclePositions: data.realtime.vehiclePositions,
-            tripIdToRouteIdLookup: data.gtfs.tripIdToRouteIdLookup,
-            routesLookup: data.gtfs.routesLookup,
+            vehiclePositions: widget.data.realtime.vehiclePositions,
+            tripIdToRouteIdLookup: widget.data.gtfs.tripIdToRouteIdLookup,
+            routesLookup: widget.data.gtfs.routesLookup,
           ),
         ],
       ),

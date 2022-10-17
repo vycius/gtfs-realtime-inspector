@@ -93,6 +93,7 @@ class _VehiclesMapState extends State<VehiclesMap> {
         options: MapOptions(
           center: _getNearestToCenter(),
           interactiveFlags: InteractiveFlag.all & ~InteractiveFlag.rotate,
+          maxZoom: 18,
         ),
         nonRotatedChildren: [
           TileLayer(
