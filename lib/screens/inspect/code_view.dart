@@ -23,6 +23,7 @@ class CodeView extends StatelessWidget {
           vehiclePositions: state.filteredVehiclePositions,
           alerts: state.filteredAlerts,
           selectedVehicleDescriptor: state.selectedVehicleDescriptor,
+          selectedTripDescriptor: state.selectedTripDescriptor,
         );
       },
     );
@@ -38,6 +39,7 @@ class _CodeViewBody extends StatelessWidget {
   final List<VehiclePosition> vehiclePositions;
   final List<Alert> alerts;
   final VehicleDescriptor? selectedVehicleDescriptor;
+  final TripDescriptor? selectedTripDescriptor;
 
   const _CodeViewBody({
     required this.gtfsUrl,
@@ -46,6 +48,7 @@ class _CodeViewBody extends StatelessWidget {
     required this.vehiclePositions,
     required this.alerts,
     required this.selectedVehicleDescriptor,
+    required this.selectedTripDescriptor,
     required this.gtfs,
   });
 
@@ -90,18 +93,19 @@ class _CodeViewBody extends StatelessWidget {
         body: Stack(
           children: [
             TabBarView(
+              physics: const NeverScrollableScrollPhysics(),
               children: [
-                _CodeTab<TripUpdate>(
+                _CodeTab<VehiclePosition>(
                   gtfs: gtfs,
-                  entities: tripUpdates,
+                  entities: vehiclePositions,
                   protoJsonLookup: (e) => e.toProto3Json(),
                   vehicleDescriptorLookup: (e) =>
                       e.hasVehicle() ? e.vehicle : null,
                   tripDescriptorLookup: (e) => e.hasTrip() ? e.trip : null,
                 ),
-                _CodeTab<VehiclePosition>(
+                _CodeTab<TripUpdate>(
                   gtfs: gtfs,
-                  entities: vehiclePositions,
+                  entities: tripUpdates,
                   protoJsonLookup: (e) => e.toProto3Json(),
                   vehicleDescriptorLookup: (e) =>
                       e.hasVehicle() ? e.vehicle : null,
@@ -116,24 +120,36 @@ class _CodeViewBody extends StatelessWidget {
                 ),
               ],
             ),
-            if (selectedVehicleDescriptor != null)
+            if (selectedVehicleDescriptor != null ||
+                selectedTripDescriptor != null)
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(8, 8, 8, 32),
-                  child: Chip(
-                    label: Text(
-                      'Vehicle: ${selectedVehicleDescriptor?.id}',
-                    ),
-                    deleteIcon: const Icon(Icons.close),
-                    deleteButtonTooltipMessage: 'Deselect',
-                    onDeleted: () => context.read<InspectCubit>().deselect(),
-                  ),
+                  child: _builderFilterChip(context),
                 ),
               )
           ],
         ),
       ),
+    );
+  }
+
+  Widget _builderFilterChip(BuildContext context) {
+    final textParts = List<String>.empty(growable: true);
+
+    if (selectedVehicleDescriptor != null) {
+      textParts.add('Vehicle: ${selectedVehicleDescriptor?.id}');
+    }
+    if (selectedTripDescriptor != null) {
+      textParts.add('Trip: ${selectedTripDescriptor?.tripId}');
+    }
+
+    return Chip(
+      label: Text(textParts.join(' or ')),
+      deleteIcon: const Icon(Icons.close),
+      deleteButtonTooltipMessage: 'Deselect',
+      onDeleted: () => context.read<InspectCubit>().deselect(),
     );
   }
 }
