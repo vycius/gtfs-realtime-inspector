@@ -1,5 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+
+// ignore: depend_on_referenced_packages
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gtfs_realtime_inspector/extensions.dart';
 import 'package:gtfs_realtime_inspector/screens/info/info_screen.dart';
@@ -9,6 +12,7 @@ import 'package:gtfs_realtime_inspector/utils.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  usePathUrlStrategy();
 
   runApp(const MyApp());
 }
