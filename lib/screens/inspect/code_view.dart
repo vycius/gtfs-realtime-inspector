@@ -7,6 +7,7 @@ import 'package:flutter_highlight/themes/darcula.dart';
 import 'package:flutter_highlight/themes/github.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gtfs_realtime_bindings/gtfs_realtime_bindings.dart';
+import 'package:gtfs_realtime_inspector/extensions.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/inspect_cubit.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/models.dart';
 
@@ -137,7 +138,7 @@ class _CodeViewBody extends StatelessWidget {
 
     if (selectedVehicleDescriptor != null) {
       textParts.add(
-        'Vehicle: ${selectedVehicleDescriptor?.label ?? selectedVehicleDescriptor?.id}',
+        'Vehicle: ${selectedVehicleDescriptor?.label.emptyToNull() ?? selectedVehicleDescriptor?.id}',
       );
     }
     if (selectedTripDescriptor != null) {
