@@ -81124,8 +81124,8 @@ m=A.b([new A.DB(A.b([new A.mE(s,p,new A.akx(),new A.aky(),new A.akz(),q,t.Xe),ne
 if(r.w!=null||r.x!=null)m.push(new A.eZ(B.mn,q,q,new A.c3(B.EO,r.a0W(a),q),q))
 return new A.zA(3,A.PH(l,A.f9(B.a6,m,B.aa)),q)},
 a0W(a){var s,r=null,q=J.iG(0,t.N),p=this.w
-if(p!=null){s=A.QB(p.a.j_(1))
-if(s==null)p=p.a.j_(0)
+if(p!=null){s=A.QB(p.a.j_(0))
+if(s==null)p=p.a.j_(1)
 else p=s
 q.push("Vehicle: "+A.h(p))}p=this.x
 if(p!=null)q.push("Trip: "+A.h(p.a.j_(0)))
