@@ -1,16 +1,5 @@
-# gtfs_realtime_inspector
+# GTFS Realtime inspector
 
-GTFS Realtime inspector
+Inspect and analyse GTFS Realtime feeds in your browser! https://gtfs.vycius.lt/
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![GTFS Realtime Inspector](https://user-images.githubusercontent.com/3719141/196124275-54d6a33a-7588-4458-a60e-fb63b5569626.png "GTFS Realtime inspector")
