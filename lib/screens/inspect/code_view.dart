@@ -59,10 +59,10 @@ class _CodeViewBody extends StatelessWidget {
           bottom: TabBar(
             tabs: [
               Tab(
-                text: 'Trip updates (${tripUpdates.length})',
+                text: 'Vehicle positions (${vehiclePositions.length})',
               ),
               Tab(
-                text: 'Vehicle positions (${vehiclePositions.length})',
+                text: 'Trip updates (${tripUpdates.length})',
               ),
               Tab(
                 text: 'Service alerts (${alerts.length})',
@@ -136,7 +136,9 @@ class _CodeViewBody extends StatelessWidget {
     final textParts = List<String>.empty(growable: true);
 
     if (selectedVehicleDescriptor != null) {
-      textParts.add('Vehicle: ${selectedVehicleDescriptor?.id}');
+      textParts.add(
+        'Vehicle: ${selectedVehicleDescriptor?.label ?? selectedVehicleDescriptor?.id}',
+      );
     }
     if (selectedTripDescriptor != null) {
       textParts.add('Trip: ${selectedTripDescriptor?.tripId}');

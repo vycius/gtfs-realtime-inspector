@@ -91,7 +91,7 @@ class _VehiclesMapState extends State<VehiclesMap> {
       },
       child: FlutterMap(
         options: MapOptions(
-          center: _getCenter(),
+          center: _getNearestToCenter(),
           interactiveFlags: InteractiveFlag.all & ~InteractiveFlag.rotate,
         ),
         nonRotatedChildren: [
@@ -126,7 +126,7 @@ class _VehiclesMapState extends State<VehiclesMap> {
     );
   }
 
-  LatLng? _getCenter() {
+  LatLng? _getNearestToCenter() {
     if (widget.vehiclePositions.isEmpty) {
       return null;
     }
@@ -137,7 +137,11 @@ class _VehiclesMapState extends State<VehiclesMap> {
         )
         .toList();
 
-    return LatLngBounds.fromPoints(points).center;
+    final center = LatLngBounds.fromPoints(points).center;
+
+    const distance = Distance();
+
+    return minBy<LatLng, double>(points, (p) => distance(p, center));
   }
 
   @override
