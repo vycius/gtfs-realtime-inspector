@@ -7,22 +7,28 @@ import 'package:gtfs_realtime_inspector/screens/inspect/inspect_cubit.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/models.dart';
 import 'package:latlong2/latlong.dart';
 
-class VehiclesMap extends StatelessWidget {
+class VehiclesMap extends StatefulWidget {
   final List<VehiclePosition> vehiclePositions;
   final Map<String, String> tripIdToRouteIdLookup;
   final Map<String, GTFSRoute> routesLookup;
-  final mapController = MapController();
 
-  VehiclesMap({
+  const VehiclesMap({
     required this.vehiclePositions,
     required this.tripIdToRouteIdLookup,
     required this.routesLookup,
   });
 
+  @override
+  State<VehiclesMap> createState() => _VehiclesMapState();
+}
+
+class _VehiclesMapState extends State<VehiclesMap> {
+  final _mapController = MapController();
+
   MarkerLayer buildLayer() {
     return MarkerLayer(
       markers: [
-        for (final vehiclePosition in vehiclePositions)
+        for (final vehiclePosition in widget.vehiclePositions)
           Marker(
             key: Key('vehicle-${vehiclePosition.vehicle.id}'),
             point: LatLng(
@@ -36,14 +42,22 @@ class VehiclesMap extends StatelessWidget {
                   final vehicleDescriptor = vehiclePosition.hasVehicle()
                       ? vehiclePosition.vehicle
                       : null;
-                  return context.read<InspectCubit>().selectVehicleDescriptor(
+
+                  final tripDescriptor =
+                      vehiclePosition.hasTrip() ? vehiclePosition.trip : null;
+
+                  return context.read<InspectCubit>().select(
                         vehicleDescriptor,
+                        tripDescriptor,
                       );
                 },
-                child: _VehicleIcon(
-                  vehiclePosition: vehiclePosition,
-                  tripIdToRouteIdLookup: tripIdToRouteIdLookup,
-                  routesLookup: routesLookup,
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: _VehicleIcon(
+                    vehiclePosition: vehiclePosition,
+                    tripIdToRouteIdLookup: widget.tripIdToRouteIdLookup,
+                    routesLookup: widget.routesLookup,
+                  ),
                 ),
               );
             },
@@ -57,22 +71,23 @@ class VehiclesMap extends StatelessWidget {
     return BlocListener<InspectCubit, InspectScreenState>(
       listener: (_, state) {
         final selectedVehicleDescriptor = state.selectedVehicleDescriptor;
-        final vehiclePosition = vehiclePositions
-            .firstWhereOrNull(
-              (v) => v.vehicle == selectedVehicleDescriptor,
-            )
-            ?.position;
 
-        print('selectedVehicleDescriptor: $selectedVehicleDescriptor vehiclePosition: $vehiclePosition');
+        if (selectedVehicleDescriptor != null) {
+          final vehiclePosition = widget.vehiclePositions
+              .firstWhereOrNull(
+                (v) => v.hasVehicle() && v.vehicle == selectedVehicleDescriptor,
+              )
+              ?.position;
 
-        if (vehiclePosition != null) {
-          mapController.move(
-            LatLng(
-              vehiclePosition.latitude,
-              vehiclePosition.longitude,
-            ),
-            mapController.zoom,
-          );
+          if (vehiclePosition != null) {
+            _mapController.move(
+              LatLng(
+                vehiclePosition.latitude,
+                vehiclePosition.longitude,
+              ),
+              _mapController.zoom,
+            );
+          }
         }
       },
       child: FlutterMap(
@@ -90,23 +105,29 @@ class VehiclesMap extends StatelessWidget {
             source: 'OpenStreetMap contributors',
           ),
         ],
-        mapController: mapController,
+        mapController: _mapController,
       ),
     );
   }
 
   LatLng? _getCenter() {
-    if (vehiclePositions.isEmpty) {
+    if (widget.vehiclePositions.isEmpty) {
       return null;
     }
 
-    final points = vehiclePositions
+    final points = widget.vehiclePositions
         .map(
           (v) => LatLng(v.position.latitude, v.position.longitude),
         )
         .toList();
 
     return LatLngBounds.fromPoints(points).center;
+  }
+
+  @override
+  void dispose() {
+    _mapController.dispose();
+    super.dispose();
   }
 }
 

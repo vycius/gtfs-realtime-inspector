@@ -6,37 +6,11 @@ import 'package:gtfs_realtime_inspector/screens/inspect/models.dart';
 class InspectCubit extends Cubit<InspectScreenState> {
   InspectCubit(super.initialState);
 
-  void selectTripDescriptor(
-    TripDescriptor? tripDescriptor,
-  ) {
-    if (tripDescriptor == null) {
-      deselect();
-    } else {
-      _select(
-        _lookupVehicleDescriptor(tripDescriptor),
-        tripDescriptor,
-      );
-    }
-  }
-
-  void selectVehicleDescriptor(
-    VehicleDescriptor? vehicleDescriptor,
-  ) {
-    if (vehicleDescriptor == null) {
-      deselect();
-    } else {
-      _select(
-        vehicleDescriptor,
-        _lookupTripDescriptor(vehicleDescriptor),
-      );
-    }
-  }
-
   void deselect() {
-    _select(null, null);
+    select(null, null);
   }
 
-  void _select(
+  void select(
     VehicleDescriptor? vehicleDescriptor,
     TripDescriptor? tripDescriptor,
   ) {
@@ -55,23 +29,6 @@ class InspectCubit extends Cubit<InspectScreenState> {
         filteredAlerts: _filterAlerts(tripDescriptor),
       ),
     );
-  }
-
-  VehicleDescriptor? _lookupVehicleDescriptor(TripDescriptor tripDescriptor) {
-    return state.allVehiclePositions
-        .firstWhereOrNull(
-          (v) => v.hasVehicle() && v.hasTrip() && v.trip == tripDescriptor,
-        )
-        ?.vehicle;
-  }
-
-  TripDescriptor? _lookupTripDescriptor(VehicleDescriptor vehicleDescriptor) {
-    return state.allVehiclePositions
-        .firstWhereOrNull(
-          (v) =>
-              v.hasTrip() && v.hasVehicle() && v.vehicle == vehicleDescriptor,
-        )
-        ?.trip;
   }
 
   List<VehiclePosition> _filterVehiclePositions(

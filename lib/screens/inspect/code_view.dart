@@ -192,6 +192,7 @@ class _CodeTab<T> extends StatelessWidget {
             tripDescriptor != null ? protoTripToRoute(tripDescriptor) : null;
 
         return ListTile(
+          key: ObjectKey(entity),
           tileColor: theme['root']!.backgroundColor,
           trailing: route != null ? RouteAvatar(route: route) : null,
           onTap: () => vehicleDescriptor != null || tripDescriptor != null
@@ -213,11 +214,7 @@ class _CodeTab<T> extends StatelessWidget {
     VehicleDescriptor? vehicleDescriptor,
     TripDescriptor? tripDescriptor,
   ) {
-    if (vehicleDescriptor != null) {
-      context.read<InspectCubit>().selectVehicleDescriptor(vehicleDescriptor);
-    } else if (tripDescriptor != null) {
-      context.read<InspectCubit>().selectTripDescriptor(tripDescriptor);
-    }
+    context.read<InspectCubit>().select(vehicleDescriptor, tripDescriptor);
   }
 
   GTFSRoute? protoTripToRoute(TripDescriptor tripDescriptor) {
