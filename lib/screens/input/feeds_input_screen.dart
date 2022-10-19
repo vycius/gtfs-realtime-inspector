@@ -27,7 +27,9 @@ class FeedsInputScreen extends StatelessWidget {
     'Klaipėda, Lithuania': FeedsInput(
       gtfsUrl: 'https://www.stops.lt/klaipeda/klaipeda/gtfs.zip',
       gtfsRealtimeUrls: [
+        'https://www.stops.lt/klaipeda/trip_updates.pb',
         'https://www.stops.lt/klaipeda/gtfs_realtime.pb',
+        'https://www.stops.lt/klaipeda/service_alerts.pb',
       ],
     ),
     'Panevėžys, Lithuania': FeedsInput(
