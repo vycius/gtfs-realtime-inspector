@@ -3,25 +3,25 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 const RESOURCES = {
-  "favicon.png": "bd39dec008acf866c4af56edffbd8016",
-"main.dart.js": "424423c707614c96db71e2d72b51260d",
-"index.html": "aadcc784edb2956c3d8478311aad9c97",
-"/": "aadcc784edb2956c3d8478311aad9c97",
-"flutter.js": "f85e6fb278b0fd20c349186fb46ae36d",
-"manifest.json": "55710056f45337e3a5c669eca9d60b40",
-"canvaskit/canvaskit.js": "2bc454a691c631b07a9307ac4ca47797",
-"canvaskit/canvaskit.wasm": "bf50631470eb967688cca13ee181af62",
-"canvaskit/profiling/canvaskit.js": "38164e5a72bdad0faa4ce740c9b8e564",
-"canvaskit/profiling/canvaskit.wasm": "95a45378b69e77af5ed2bc72b2209b94",
-"assets/AssetManifest.json": "99914b932bd37a50b983c5e7c90ae93b",
-"assets/shaders/ink_sparkle.frag": "0cfae77e432d12ec44627f8d9eacbc65",
+  "assets/shaders/ink_sparkle.frag": "0cfae77e432d12ec44627f8d9eacbc65",
 "assets/FontManifest.json": "7b2a36307916a9721811788013e65289",
 "assets/fonts/MaterialIcons-Regular.otf": "95db9098c58fd6db106f1116bae85a0b",
 "assets/NOTICES": "d6d7d8acff871425399abd1afef0f0fc",
+"assets/AssetManifest.json": "99914b932bd37a50b983c5e7c90ae93b",
+"manifest.json": "55710056f45337e3a5c669eca9d60b40",
+"favicon.png": "bd39dec008acf866c4af56edffbd8016",
 "version.json": "22e27ddca80aec3f69377fff4cefa70b",
-"icons/Icon-512.png": "b818bd1d985ea75caac9958ecd127f01",
+"index.html": "8103a4e9c305b92443393895f07e650f",
+"/": "8103a4e9c305b92443393895f07e650f",
+"main.dart.js": "af450348338abb2015185f2e78577dfb",
+"flutter.js": "f85e6fb278b0fd20c349186fb46ae36d",
+"canvaskit/profiling/canvaskit.wasm": "95a45378b69e77af5ed2bc72b2209b94",
+"canvaskit/profiling/canvaskit.js": "38164e5a72bdad0faa4ce740c9b8e564",
+"canvaskit/canvaskit.wasm": "bf50631470eb967688cca13ee181af62",
+"canvaskit/canvaskit.js": "2bc454a691c631b07a9307ac4ca47797",
 "icons/Icon-192.png": "eb4446123bb6a385d3ac9313169ce503",
 "icons/Icon-maskable-192.png": "eb4446123bb6a385d3ac9313169ce503",
+"icons/Icon-512.png": "b818bd1d985ea75caac9958ecd127f01",
 "icons/Icon-maskable-512.png": "b818bd1d985ea75caac9958ecd127f01"
 };
 
