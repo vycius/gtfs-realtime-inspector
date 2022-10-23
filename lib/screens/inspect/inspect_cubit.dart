@@ -22,7 +22,6 @@ class InspectCubit extends Cubit<InspectScreenState> {
       },
     ).asyncMap((e) => e).listen(
       (rt) {
-        print('Synced');
         emit(
           state.copyWith(
             realtimeSyncState: RealtimeSyncState.syncing,
