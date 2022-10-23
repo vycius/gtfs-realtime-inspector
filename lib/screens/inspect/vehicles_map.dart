@@ -69,6 +69,7 @@ class _VehiclesMapState extends State<VehiclesMap> {
                   builder: (BuildContext context, List<Marker> markers) {
                     return FloatingActionButton(
                       onPressed: null,
+                      heroTag: null,
                       backgroundColor: Colors.teal,
                       foregroundColor: Colors.white,
                       child: FittedBox(
