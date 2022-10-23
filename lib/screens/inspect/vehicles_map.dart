@@ -52,7 +52,8 @@ class _VehiclesMapState extends State<VehiclesMap> {
         ),
         nonRotatedChildren: [
           TileLayer(
-            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            subdomains: const ['a', 'b', 'c'],
             userAgentPackageName: 'lt.transit.transit',
           ),
           BlocBuilder<InspectCubit, InspectScreenState>(
