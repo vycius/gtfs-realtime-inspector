@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gtfs_realtime_bindings/gtfs_realtime_bindings.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/models.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/transit_service.dart';
+import 'package:gtfs_realtime_inspector/utils.dart';
 
 class InspectCubit extends Cubit<InspectScreenState> {
   StreamSubscription<GTFSRealtimeData>? _realtimeFeedsSubscription;
@@ -13,14 +14,14 @@ class InspectCubit extends Cubit<InspectScreenState> {
   Future<void> enableSync() async {
     await _closeRealtimeFeedsSubscription();
 
-    _realtimeFeedsSubscription = Stream.periodic(
+    _realtimeFeedsSubscription = onceAndPeriodic(
       const Duration(seconds: 20),
       (_) {
         return TransitService().fetchGtfRealtimeData(
           state.gtfsRealtimeUrls,
         );
       },
-    ).asyncMap((e) => e).listen(
+    ).listen(
       (rt) {
         emit(
           state.copyWith(

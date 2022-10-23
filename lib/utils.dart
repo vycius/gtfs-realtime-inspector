@@ -60,3 +60,13 @@ LatLng? getNearestLatLngToVehiclePositionsCenter(
 
   return minBy<LatLng, double>(points, (p) => distance(p, center));
 }
+
+Stream<T> onceAndPeriodic<T>(
+  Duration period,
+  Future<T> Function(int) computation,
+) async* {
+  yield await computation(0);
+
+  yield* Stream.periodic(period, (i) => computation(i + 1))
+      .asyncMap((event) => event);
+}
