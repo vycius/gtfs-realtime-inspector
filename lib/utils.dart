@@ -1,6 +1,10 @@
 import 'dart:ui';
 
+import 'package:collection/collection.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
+import 'package:flutter_map/plugin_api.dart';
+import 'package:gtfs_realtime_bindings/gtfs_realtime_bindings.dart';
+import 'package:latlong2/latlong.dart';
 
 bool isValidUrl(String url) {
   final uri = Uri.tryParse(url);
@@ -35,4 +39,24 @@ String timestampToFormattedDateTime(int timestamp) {
   final dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
 
   return dateFormat.format(dateTime.toLocal());
+}
+
+LatLng? getNearestLatLngToVehiclePositionsCenter(
+  List<VehiclePosition> vehiclePositions,
+) {
+  if (vehiclePositions.isEmpty) {
+    return null;
+  }
+
+  final points = vehiclePositions
+      .map(
+        (v) => LatLng(v.position.latitude, v.position.longitude),
+      )
+      .toList();
+
+  final center = LatLngBounds.fromPoints(points).center;
+
+  const distance = Distance();
+
+  return minBy<LatLng, double>(points, (p) => distance(p, center));
 }

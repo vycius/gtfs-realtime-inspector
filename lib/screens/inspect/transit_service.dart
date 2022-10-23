@@ -14,7 +14,7 @@ class TransitService {
     List<String> gtfsRealtimeUrls,
   ) async {
     final gtfsData = await _fetchGTFSFromUrl(gtfsUrl);
-    final gtfsRealtimeData = await _fetchGtfRealtimeData(gtfsRealtimeUrls);
+    final gtfsRealtimeData = await fetchGtfRealtimeData(gtfsRealtimeUrls);
 
     return TransitData(
       gtfsRealtimeUrls: gtfsRealtimeUrls,
@@ -45,7 +45,7 @@ class TransitService {
     return message;
   }
 
-  Future<GTFSRealtimeData> _fetchGtfRealtimeData(
+  Future<GTFSRealtimeData> fetchGtfRealtimeData(
     List<String> gtfsRealtimeUrls,
   ) async {
     final feeds = await Future.wait(

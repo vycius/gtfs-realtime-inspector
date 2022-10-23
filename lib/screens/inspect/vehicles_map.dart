@@ -9,15 +9,9 @@ import 'package:gtfs_realtime_inspector/screens/inspect/models.dart';
 import 'package:latlong2/latlong.dart';
 
 class VehiclesMap extends StatefulWidget {
-  final List<VehiclePosition> vehiclePositions;
-  final Map<String, String> tripIdToRouteIdLookup;
-  final Map<String, GTFSRoute> routesLookup;
+  final LatLng? center;
 
-  const VehiclesMap({
-    required this.vehiclePositions,
-    required this.tripIdToRouteIdLookup,
-    required this.routesLookup,
-  });
+  const VehiclesMap({required this.center});
 
   @override
   State<VehiclesMap> createState() => _VehiclesMapState();
@@ -26,9 +20,83 @@ class VehiclesMap extends StatefulWidget {
 class _VehiclesMapState extends State<VehiclesMap> {
   final _mapController = MapController();
 
-  List<Marker> _buildMarkers() {
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<InspectCubit, InspectScreenState>(
+      listener: (_, state) {
+        final selectedVehicleDescriptor = state.selectedVehicleDescriptor;
+
+        if (selectedVehicleDescriptor != null) {
+          final vehiclePosition = state.allVehiclePositions
+              .firstWhereOrNull(
+                (v) => v.hasVehicle() && v.vehicle == selectedVehicleDescriptor,
+              )
+              ?.position;
+
+          if (vehiclePosition != null) {
+            _mapController.move(
+              LatLng(
+                vehiclePosition.latitude,
+                vehiclePosition.longitude,
+              ),
+              _mapController.zoom,
+            );
+          }
+        }
+      },
+      child: FlutterMap(
+        options: MapOptions(
+          center: widget.center,
+          interactiveFlags: InteractiveFlag.all & ~InteractiveFlag.rotate,
+          maxZoom: 18,
+        ),
+        nonRotatedChildren: [
+          TileLayer(
+            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            userAgentPackageName: 'lt.transit.transit',
+          ),
+          BlocBuilder<InspectCubit, InspectScreenState>(
+            builder: (context, state) {
+              return MarkerClusterLayerWidget(
+                options: MarkerClusterLayerOptions(
+                  markers: _buildMarkers(
+                    vehiclePositions: state.allVehiclePositions,
+                    routesLookup: state.gtfs.routesLookup,
+                    tripIdToRouteIdLookup: state.gtfs.tripIdToRouteIdLookup,
+                  ),
+                  anchor: AnchorPos.align(AnchorAlign.center),
+                  disableClusteringAtZoom: 13,
+                  builder: (BuildContext context, List<Marker> markers) {
+                    return FloatingActionButton(
+                      onPressed: null,
+                      backgroundColor: Colors.teal,
+                      foregroundColor: Colors.white,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(markers.length.toString()),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          ),
+          AttributionWidget.defaultWidget(
+            source: 'OpenStreetMap contributors',
+          ),
+        ],
+        mapController: _mapController,
+      ),
+    );
+  }
+
+  List<Marker> _buildMarkers({
+    required List<VehiclePosition> vehiclePositions,
+    required Map<String, GTFSRoute> routesLookup,
+    required Map<String, String> tripIdToRouteIdLookup,
+  }) {
     return [
-      for (final vehiclePosition in widget.vehiclePositions)
+      for (final vehiclePosition in vehiclePositions)
         Marker(
           key: ObjectKey(vehiclePosition),
           point: LatLng(
@@ -55,94 +123,14 @@ class _VehiclesMapState extends State<VehiclesMap> {
                 cursor: SystemMouseCursors.click,
                 child: _VehicleIcon(
                   vehiclePosition: vehiclePosition,
-                  tripIdToRouteIdLookup: widget.tripIdToRouteIdLookup,
-                  routesLookup: widget.routesLookup,
+                  tripIdToRouteIdLookup: tripIdToRouteIdLookup,
+                  routesLookup: routesLookup,
                 ),
               ),
             );
           },
         ),
     ];
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocListener<InspectCubit, InspectScreenState>(
-      listener: (_, state) {
-        final selectedVehicleDescriptor = state.selectedVehicleDescriptor;
-
-        if (selectedVehicleDescriptor != null) {
-          final vehiclePosition = widget.vehiclePositions
-              .firstWhereOrNull(
-                (v) => v.hasVehicle() && v.vehicle == selectedVehicleDescriptor,
-              )
-              ?.position;
-
-          if (vehiclePosition != null) {
-            _mapController.move(
-              LatLng(
-                vehiclePosition.latitude,
-                vehiclePosition.longitude,
-              ),
-              _mapController.zoom,
-            );
-          }
-        }
-      },
-      child: FlutterMap(
-        options: MapOptions(
-          center: _getNearestToCenter(),
-          interactiveFlags: InteractiveFlag.all & ~InteractiveFlag.rotate,
-          maxZoom: 18,
-        ),
-        nonRotatedChildren: [
-          TileLayer(
-            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            userAgentPackageName: 'lt.transit.transit',
-          ),
-          MarkerClusterLayerWidget(
-            options: MarkerClusterLayerOptions(
-              markers: _buildMarkers(),
-              anchor: AnchorPos.align(AnchorAlign.center),
-              disableClusteringAtZoom: 13,
-              builder: (BuildContext context, List<Marker> markers) {
-                return FloatingActionButton(
-                  onPressed: null,
-                  backgroundColor: Colors.teal,
-                  foregroundColor: Colors.white,
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(markers.length.toString()),
-                  ),
-                );
-              },
-            ),
-          ),
-          AttributionWidget.defaultWidget(
-            source: 'OpenStreetMap contributors',
-          ),
-        ],
-        mapController: _mapController,
-      ),
-    );
-  }
-
-  LatLng? _getNearestToCenter() {
-    if (widget.vehiclePositions.isEmpty) {
-      return null;
-    }
-
-    final points = widget.vehiclePositions
-        .map(
-          (v) => LatLng(v.position.latitude, v.position.longitude),
-        )
-        .toList();
-
-    final center = LatLngBounds.fromPoints(points).center;
-
-    const distance = Distance();
-
-    return minBy<LatLng, double>(points, (p) => distance(p, center));
   }
 
   @override

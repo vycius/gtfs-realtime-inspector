@@ -5,8 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/code_view.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/inspect_cubit.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/models.dart';
+import 'package:gtfs_realtime_inspector/screens/inspect/sync_selector_view.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/transit_service.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/vehicles_map.dart';
+import 'package:gtfs_realtime_inspector/utils.dart';
 import 'package:split_view/split_view.dart';
 
 class InspectScreen extends StatefulWidget {
@@ -101,10 +103,21 @@ class _InspectScreenBodyState extends State<_InspectScreenBody> {
         ),
         children: [
           CodeView(),
-          VehiclesMap(
-            vehiclePositions: widget.data.realtime.vehiclePositions,
-            tripIdToRouteIdLookup: widget.data.gtfs.tripIdToRouteIdLookup,
-            routesLookup: widget.data.gtfs.routesLookup,
+          Stack(
+            children: [
+              VehiclesMap(
+                center: getNearestLatLngToVehiclePositionsCenter(
+                  widget.data.realtime.vehiclePositions,
+                ),
+              ),
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: SyncSelectorView(),
+                ),
+              ),
+            ],
           ),
         ],
       ),

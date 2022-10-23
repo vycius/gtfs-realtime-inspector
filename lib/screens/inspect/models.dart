@@ -18,6 +18,7 @@ class InspectScreenState with _$InspectScreenState {
     required List<Alert> filteredAlerts,
     VehicleDescriptor? selectedVehicleDescriptor,
     TripDescriptor? selectedTripDescriptor,
+    @Default(RealtimeSyncState.disabled) RealtimeSyncState realtimeSyncState,
   }) = _InspectScreenState;
 }
 
@@ -72,4 +73,9 @@ class TransitData {
     required this.gtfs,
     required this.realtime,
   });
+}
+
+enum RealtimeSyncState {
+  disabled,
+  syncing,
 }

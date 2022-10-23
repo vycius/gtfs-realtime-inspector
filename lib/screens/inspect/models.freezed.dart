@@ -31,6 +31,7 @@ mixin _$InspectScreenState {
       throw _privateConstructorUsedError;
   TripDescriptor? get selectedTripDescriptor =>
       throw _privateConstructorUsedError;
+  RealtimeSyncState get realtimeSyncState => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $InspectScreenStateCopyWith<InspectScreenState> get copyWith =>
@@ -53,7 +54,8 @@ abstract class $InspectScreenStateCopyWith<$Res> {
       List<VehiclePosition> filteredVehiclePositions,
       List<Alert> filteredAlerts,
       VehicleDescriptor? selectedVehicleDescriptor,
-      TripDescriptor? selectedTripDescriptor});
+      TripDescriptor? selectedTripDescriptor,
+      RealtimeSyncState realtimeSyncState});
 }
 
 /// @nodoc
@@ -79,6 +81,7 @@ class _$InspectScreenStateCopyWithImpl<$Res, $Val extends InspectScreenState>
     Object? filteredAlerts = null,
     Object? selectedVehicleDescriptor = freezed,
     Object? selectedTripDescriptor = freezed,
+    Object? realtimeSyncState = null,
   }) {
     return _then(_value.copyWith(
       gtfsRealtimeUrls: null == gtfsRealtimeUrls
@@ -121,6 +124,10 @@ class _$InspectScreenStateCopyWithImpl<$Res, $Val extends InspectScreenState>
           ? _value.selectedTripDescriptor
           : selectedTripDescriptor // ignore: cast_nullable_to_non_nullable
               as TripDescriptor?,
+      realtimeSyncState: null == realtimeSyncState
+          ? _value.realtimeSyncState
+          : realtimeSyncState // ignore: cast_nullable_to_non_nullable
+              as RealtimeSyncState,
     ) as $Val);
   }
 }
@@ -143,7 +150,8 @@ abstract class _$$_InspectScreenStateCopyWith<$Res>
       List<VehiclePosition> filteredVehiclePositions,
       List<Alert> filteredAlerts,
       VehicleDescriptor? selectedVehicleDescriptor,
-      TripDescriptor? selectedTripDescriptor});
+      TripDescriptor? selectedTripDescriptor,
+      RealtimeSyncState realtimeSyncState});
 }
 
 /// @nodoc
@@ -167,6 +175,7 @@ class __$$_InspectScreenStateCopyWithImpl<$Res>
     Object? filteredAlerts = null,
     Object? selectedVehicleDescriptor = freezed,
     Object? selectedTripDescriptor = freezed,
+    Object? realtimeSyncState = null,
   }) {
     return _then(_$_InspectScreenState(
       gtfsRealtimeUrls: null == gtfsRealtimeUrls
@@ -209,6 +218,10 @@ class __$$_InspectScreenStateCopyWithImpl<$Res>
           ? _value.selectedTripDescriptor
           : selectedTripDescriptor // ignore: cast_nullable_to_non_nullable
               as TripDescriptor?,
+      realtimeSyncState: null == realtimeSyncState
+          ? _value.realtimeSyncState
+          : realtimeSyncState // ignore: cast_nullable_to_non_nullable
+              as RealtimeSyncState,
     ));
   }
 }
@@ -226,7 +239,8 @@ class _$_InspectScreenState implements _InspectScreenState {
       required final List<VehiclePosition> filteredVehiclePositions,
       required final List<Alert> filteredAlerts,
       this.selectedVehicleDescriptor,
-      this.selectedTripDescriptor})
+      this.selectedTripDescriptor,
+      this.realtimeSyncState = RealtimeSyncState.disabled})
       : _gtfsRealtimeUrls = gtfsRealtimeUrls,
         _allTripUpdates = allTripUpdates,
         _allVehiclePositions = allVehiclePositions,
@@ -290,10 +304,13 @@ class _$_InspectScreenState implements _InspectScreenState {
   final VehicleDescriptor? selectedVehicleDescriptor;
   @override
   final TripDescriptor? selectedTripDescriptor;
+  @override
+  @JsonKey()
+  final RealtimeSyncState realtimeSyncState;
 
   @override
   String toString() {
-    return 'InspectScreenState(gtfsRealtimeUrls: $gtfsRealtimeUrls, gtfs: $gtfs, allTripUpdates: $allTripUpdates, allVehiclePositions: $allVehiclePositions, allAlerts: $allAlerts, filteredTripUpdates: $filteredTripUpdates, filteredVehiclePositions: $filteredVehiclePositions, filteredAlerts: $filteredAlerts, selectedVehicleDescriptor: $selectedVehicleDescriptor, selectedTripDescriptor: $selectedTripDescriptor)';
+    return 'InspectScreenState(gtfsRealtimeUrls: $gtfsRealtimeUrls, gtfs: $gtfs, allTripUpdates: $allTripUpdates, allVehiclePositions: $allVehiclePositions, allAlerts: $allAlerts, filteredTripUpdates: $filteredTripUpdates, filteredVehiclePositions: $filteredVehiclePositions, filteredAlerts: $filteredAlerts, selectedVehicleDescriptor: $selectedVehicleDescriptor, selectedTripDescriptor: $selectedTripDescriptor, realtimeSyncState: $realtimeSyncState)';
   }
 
   @override
@@ -320,7 +337,9 @@ class _$_InspectScreenState implements _InspectScreenState {
                     selectedVehicleDescriptor) ||
                 other.selectedVehicleDescriptor == selectedVehicleDescriptor) &&
             (identical(other.selectedTripDescriptor, selectedTripDescriptor) ||
-                other.selectedTripDescriptor == selectedTripDescriptor));
+                other.selectedTripDescriptor == selectedTripDescriptor) &&
+            (identical(other.realtimeSyncState, realtimeSyncState) ||
+                other.realtimeSyncState == realtimeSyncState));
   }
 
   @override
@@ -335,7 +354,8 @@ class _$_InspectScreenState implements _InspectScreenState {
       const DeepCollectionEquality().hash(_filteredVehiclePositions),
       const DeepCollectionEquality().hash(_filteredAlerts),
       selectedVehicleDescriptor,
-      selectedTripDescriptor);
+      selectedTripDescriptor,
+      realtimeSyncState);
 
   @JsonKey(ignore: true)
   @override
@@ -356,7 +376,8 @@ abstract class _InspectScreenState implements InspectScreenState {
       required final List<VehiclePosition> filteredVehiclePositions,
       required final List<Alert> filteredAlerts,
       final VehicleDescriptor? selectedVehicleDescriptor,
-      final TripDescriptor? selectedTripDescriptor}) = _$_InspectScreenState;
+      final TripDescriptor? selectedTripDescriptor,
+      final RealtimeSyncState realtimeSyncState}) = _$_InspectScreenState;
 
   @override
   List<String> get gtfsRealtimeUrls;
@@ -378,6 +399,8 @@ abstract class _InspectScreenState implements InspectScreenState {
   VehicleDescriptor? get selectedVehicleDescriptor;
   @override
   TripDescriptor? get selectedTripDescriptor;
+  @override
+  RealtimeSyncState get realtimeSyncState;
   @override
   @JsonKey(ignore: true)
   _$$_InspectScreenStateCopyWith<_$_InspectScreenState> get copyWith =>
