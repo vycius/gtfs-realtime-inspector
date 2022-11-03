@@ -4,7 +4,7 @@ import 'package:archive/archive.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gtfs_realtime_bindings/gtfs_realtime_bindings.dart';
-import 'package:gtfs_realtime_inspector/screens/inspect/models.dart';
+import 'package:gtfs_realtime_inspector/inspect/models/models.dart';
 import 'package:gtfs_realtime_inspector/utils.dart';
 import 'package:http/http.dart' as http;
 

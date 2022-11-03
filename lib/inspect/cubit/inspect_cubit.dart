@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gtfs_realtime_bindings/gtfs_realtime_bindings.dart';
-import 'package:gtfs_realtime_inspector/screens/inspect/models.dart';
-import 'package:gtfs_realtime_inspector/screens/inspect/transit_service.dart';
+import 'package:gtfs_realtime_inspector/inspect/models/models.dart';
+import 'package:gtfs_realtime_inspector/inspect/service/transit_service.dart';
 import 'package:gtfs_realtime_inspector/utils.dart';
 
 class InspectCubit extends Cubit<InspectScreenState> {

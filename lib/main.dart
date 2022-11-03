@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gtfs_realtime_inspector/extensions.dart';
-import 'package:gtfs_realtime_inspector/screens/info/info_screen.dart';
-import 'package:gtfs_realtime_inspector/screens/input/feeds_input_screen.dart';
-import 'package:gtfs_realtime_inspector/screens/inspect/inspect_screen.dart';
+import 'package:gtfs_realtime_inspector/feeds_input/views/feeds_input_page.dart';
+import 'package:gtfs_realtime_inspector/info/views/info_page.dart';
+import 'package:gtfs_realtime_inspector/inspect/view/inspect_page.dart';
 import 'package:gtfs_realtime_inspector/utils.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl_browser.dart';
@@ -67,7 +67,7 @@ final GoRouter _router = GoRouter(
         final gtfsUrl = queryParams['gtfs_url']?.firstOrNull?.emptyToNull();
         final gtfsRealtimeUrls = queryParams['gtfs_realtime_urls'] ?? [];
 
-        return FeedsInputScreen(
+        return FeedsInputPage(
           initialGtfsUrl: gtfsUrl,
           initialGtfsRealtimeUrls: gtfsRealtimeUrls,
         );
@@ -82,7 +82,7 @@ final GoRouter _router = GoRouter(
             final gtfsUrl = queryParams['gtfs_url']?.firstOrNull?.emptyToNull();
             final gtfsRealtimeUrls = queryParams['gtfs_realtime_urls']!;
 
-            return InspectScreen(
+            return InspectPage(
               gtfsUrl: gtfsUrl,
               gtfsRealtimeUrls: gtfsRealtimeUrls,
             );
@@ -121,7 +121,7 @@ final GoRouter _router = GoRouter(
 
                 return MaterialPage(
                   fullscreenDialog: true,
-                  child: InfoScreen(
+                  child: InfoPage(
                     gtfsUrl: gtfsUrl,
                     gtfsRealtimeUrls: gtfsRealtimeUrls,
                   ),

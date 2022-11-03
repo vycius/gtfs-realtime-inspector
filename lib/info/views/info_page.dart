@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class InfoScreen extends StatelessWidget {
+class InfoPage extends StatelessWidget {
   static const _authorPageUrl = 'https://www.vycius.lt/';
   final String? gtfsUrl;
   final List<String> gtfsRealtimeUrls;
 
-  const InfoScreen({
+  const InfoPage({
     super.key,
     required this.gtfsUrl,
     required this.gtfsRealtimeUrls,

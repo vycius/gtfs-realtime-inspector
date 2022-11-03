@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gtfs_realtime_inspector/screens/input/feeds_input_bloc.dart';
+import 'package:gtfs_realtime_inspector/feeds_input/blocs/feeds_input_bloc.dart';
+import 'package:gtfs_realtime_inspector/feeds_input/models/feeds_input.dart';
 
-class FeedsInputScreen extends StatelessWidget {
+class FeedsInputPage extends StatelessWidget {
   final String? initialGtfsUrl;
   final List<String> initialGtfsRealtimeUrls;
 
@@ -57,7 +58,7 @@ class FeedsInputScreen extends StatelessWidget {
     ),
   };
 
-  FeedsInputScreen({
+  FeedsInputPage({
     super.key,
     required this.initialGtfsUrl,
     required this.initialGtfsRealtimeUrls,
@@ -207,14 +208,4 @@ class _UrlInputField extends StatelessWidget {
       keyboardType: TextInputType.url,
     );
   }
-}
-
-class FeedsInput {
-  final String? gtfsUrl;
-  final List<String> gtfsRealtimeUrls;
-
-  FeedsInput({
-    required this.gtfsUrl,
-    required this.gtfsRealtimeUrls,
-  });
 }

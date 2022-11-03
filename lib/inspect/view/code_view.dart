@@ -8,8 +8,8 @@ import 'package:flutter_highlight/themes/github.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gtfs_realtime_bindings/gtfs_realtime_bindings.dart';
 import 'package:gtfs_realtime_inspector/extensions.dart';
-import 'package:gtfs_realtime_inspector/screens/inspect/inspect_cubit.dart';
-import 'package:gtfs_realtime_inspector/screens/inspect/models.dart';
+import 'package:gtfs_realtime_inspector/inspect/cubit/inspect_cubit.dart';
+import 'package:gtfs_realtime_inspector/inspect/models/models.dart';
 import 'package:gtfs_realtime_inspector/utils.dart';
 
 class CodeView extends StatelessWidget {

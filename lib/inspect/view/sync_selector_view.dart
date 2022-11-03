@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gtfs_realtime_inspector/screens/inspect/inspect_cubit.dart';
-import 'package:gtfs_realtime_inspector/screens/inspect/models.dart';
+import 'package:gtfs_realtime_inspector/inspect/cubit/inspect_cubit.dart';
+import 'package:gtfs_realtime_inspector/inspect/models/models.dart';
 
 class SyncSelectorView extends StatelessWidget {
   @override

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-import 'package:gtfs_realtime_inspector/screens/input/feeds_input_screen.dart';
+import 'package:gtfs_realtime_inspector/feeds_input/models/feeds_input.dart';
 import 'package:gtfs_realtime_inspector/utils.dart';
 
 class FeedsInputBloc extends FormBloc<FeedsInput, String> {

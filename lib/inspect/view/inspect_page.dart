@@ -1,30 +1,30 @@
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gtfs_realtime_inspector/screens/inspect/code_view.dart';
-import 'package:gtfs_realtime_inspector/screens/inspect/inspect_cubit.dart';
-import 'package:gtfs_realtime_inspector/screens/inspect/models.dart';
-import 'package:gtfs_realtime_inspector/screens/inspect/sync_selector_view.dart';
-import 'package:gtfs_realtime_inspector/screens/inspect/transit_service.dart';
-import 'package:gtfs_realtime_inspector/screens/inspect/vehicles_map.dart';
+import 'package:gtfs_realtime_inspector/inspect/cubit/inspect_cubit.dart';
+import 'package:gtfs_realtime_inspector/inspect/models/models.dart';
+import 'package:gtfs_realtime_inspector/inspect/service/transit_service.dart';
+import 'package:gtfs_realtime_inspector/inspect/view/code_view.dart';
+import 'package:gtfs_realtime_inspector/inspect/view/sync_selector_view.dart';
+import 'package:gtfs_realtime_inspector/inspect/view/vehicles_map.dart';
 import 'package:gtfs_realtime_inspector/utils.dart';
 import 'package:split_view/split_view.dart';
 
-class InspectScreen extends StatefulWidget {
+class InspectPage extends StatefulWidget {
   final String? gtfsUrl;
   final List<String> gtfsRealtimeUrls;
 
-  const InspectScreen({
+  const InspectPage({
     super.key,
     required this.gtfsUrl,
     required this.gtfsRealtimeUrls,
   });
 
   @override
-  State<InspectScreen> createState() => _InspectScreenState();
+  State<InspectPage> createState() => _InspectPageState();
 }
 
-class _InspectScreenState extends State<InspectScreen> {
+class _InspectPageState extends State<InspectPage> {
   final _transitDataMemo = AsyncMemoizer<TransitData>();
 
   @override

@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:gtfs_realtime_bindings/gtfs_realtime_bindings.dart';
-import 'package:gtfs_realtime_inspector/screens/inspect/inspect_cubit.dart';
-import 'package:gtfs_realtime_inspector/screens/inspect/models.dart';
+import 'package:gtfs_realtime_inspector/inspect/cubit/inspect_cubit.dart';
+import 'package:gtfs_realtime_inspector/inspect/models/models.dart';
 import 'package:latlong2/latlong.dart';
 
 class VehiclesMap extends StatefulWidget {
