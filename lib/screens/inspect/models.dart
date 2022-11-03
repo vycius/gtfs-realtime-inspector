@@ -20,6 +20,11 @@ class InspectScreenState with _$InspectScreenState {
     TripDescriptor? selectedTripDescriptor,
     @Default(RealtimeSyncState.disabled) RealtimeSyncState realtimeSyncState,
   }) = _InspectScreenState;
+
+  const InspectScreenState._();
+
+  bool get hasAnySelections =>
+      selectedVehicleDescriptor != null || selectedTripDescriptor != null;
 }
 
 class GTFSData {

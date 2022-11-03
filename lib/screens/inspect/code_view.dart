@@ -58,6 +58,18 @@ class _CodeViewBody extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('GTFS Realtime inspector'),
+          leading: BlocBuilder<InspectCubit, InspectScreenState>(
+            builder: (context, state) {
+              if (state.hasAnySelections) {
+                return CloseButton(
+                  onPressed: () => context.read<InspectCubit>().deselect(),
+                );
+              } else {
+                return const BackButton();
+              }
+            },
+            buildWhen: (p, c) => p.hasAnySelections != c.hasAnySelections,
+          ),
           bottom: TabBar(
             tabs: [
               Tab(

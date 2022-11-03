@@ -228,7 +228,7 @@ class __$$_InspectScreenStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_InspectScreenState implements _InspectScreenState {
+class _$_InspectScreenState extends _InspectScreenState {
   const _$_InspectScreenState(
       {required final List<String> gtfsRealtimeUrls,
       required this.gtfs,
@@ -247,7 +247,8 @@ class _$_InspectScreenState implements _InspectScreenState {
         _allAlerts = allAlerts,
         _filteredTripUpdates = filteredTripUpdates,
         _filteredVehiclePositions = filteredVehiclePositions,
-        _filteredAlerts = filteredAlerts;
+        _filteredAlerts = filteredAlerts,
+        super._();
 
   final List<String> _gtfsRealtimeUrls;
   @override
@@ -365,7 +366,7 @@ class _$_InspectScreenState implements _InspectScreenState {
           this, _$identity);
 }
 
-abstract class _InspectScreenState implements InspectScreenState {
+abstract class _InspectScreenState extends InspectScreenState {
   const factory _InspectScreenState(
       {required final List<String> gtfsRealtimeUrls,
       required final GTFSData gtfs,
@@ -378,6 +379,7 @@ abstract class _InspectScreenState implements InspectScreenState {
       final VehicleDescriptor? selectedVehicleDescriptor,
       final TripDescriptor? selectedTripDescriptor,
       final RealtimeSyncState realtimeSyncState}) = _$_InspectScreenState;
+  const _InspectScreenState._() : super._();
 
   @override
   List<String> get gtfsRealtimeUrls;
