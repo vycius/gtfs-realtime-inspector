@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:archive/archive.dart';
 import 'package:csv/csv.dart';
+import 'package:flutter/foundation.dart';
 import 'package:gtfs_realtime_bindings/gtfs_realtime_bindings.dart';
 import 'package:gtfs_realtime_inspector/screens/inspect/models.dart';
 import 'package:gtfs_realtime_inspector/utils.dart';
@@ -23,24 +23,15 @@ class TransitService {
     );
   }
 
-  Future<http.Response> _makeRequestThroughCorsProxy(String url) async {
+  Future<Uint8List> _getBytesThroughCorsProxy(String url) {
     final uri = Uri.parse('https://cors-proxy.vycius.lt/?$url');
 
-    final response = await http.get(uri);
-
-    if (response.statusCode < 400) {
-      return response;
-    } else {
-      throw HttpException(
-        'Status code ${response.statusCode} while loading $url',
-        uri: uri,
-      );
-    }
+    return http.readBytes(uri);
   }
 
   Future<FeedMessage> _fetchGtfRealtimeFeed(String gtfsRealtimeUrl) async {
-    final response = await _makeRequestThroughCorsProxy(gtfsRealtimeUrl);
-    final message = FeedMessage.fromBuffer(response.bodyBytes);
+    final bytes = await _getBytesThroughCorsProxy(gtfsRealtimeUrl);
+    final message = FeedMessage.fromBuffer(bytes);
 
     return message;
   }
@@ -84,15 +75,15 @@ class TransitService {
       );
     } else {
       try {
-        final response = await _makeRequestThroughCorsProxy(gtfsUrl);
+        final bytes = await _getBytesThroughCorsProxy(gtfsUrl);
 
-        final archive = ZipDecoder().decodeBytes(
-          response.bodyBytes,
-          verify: true,
+        final decompressed = await compute(
+          ZipDecoder().decodeBytes,
+          bytes,
         );
 
-        final tripIdToRouteIdLookup = _buildTripIdToRouteIdLookup(archive);
-        final routesLookup = _buildRoutesLookup(archive);
+        final tripIdToRouteIdLookup = _buildTripIdToRouteIdLookup(decompressed);
+        final routesLookup = _buildRoutesLookup(decompressed);
 
         return GTFSData(
           url: gtfsUrl,
