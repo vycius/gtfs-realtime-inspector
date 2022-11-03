@@ -12,54 +12,58 @@ class InspectCubit extends Cubit<InspectScreenState> {
   InspectCubit(super.initialState);
 
   Future<void> enableSync() async {
-    await _closeRealtimeFeedsSubscription();
+    if (state.realtimeSyncState == RealtimeSyncState.disabled) {
+      await _closeRealtimeFeedsSubscription();
 
-    _realtimeFeedsSubscription = onceAndPeriodic(
-      const Duration(seconds: 20),
-      (_) {
-        return TransitService().fetchGtfRealtimeData(
-          state.gtfsRealtimeUrls,
-        );
-      },
-    ).listen(
-      (rt) {
-        emit(
-          state.copyWith(
-            realtimeSyncState: RealtimeSyncState.syncing,
-            allTripUpdates: rt.tripUpdates,
-            allVehiclePositions: rt.vehiclePositions,
-            allAlerts: rt.alerts,
-            filteredTripUpdates: _filterTripUpdates(
-              rt.tripUpdates,
-              state.selectedVehicleDescriptor,
-              state.selectedTripDescriptor,
+      _realtimeFeedsSubscription = onceAndPeriodic(
+        const Duration(seconds: 20),
+        (_) {
+          return TransitService().fetchGtfRealtimeData(
+            state.gtfsRealtimeUrls,
+          );
+        },
+      ).listen(
+        (rt) {
+          emit(
+            state.copyWith(
+              realtimeSyncState: RealtimeSyncState.syncing,
+              allTripUpdates: rt.tripUpdates,
+              allVehiclePositions: rt.vehiclePositions,
+              allAlerts: rt.alerts,
+              filteredTripUpdates: _filterTripUpdates(
+                rt.tripUpdates,
+                state.selectedVehicleDescriptor,
+                state.selectedTripDescriptor,
+              ),
+              filteredVehiclePositions: _filterVehiclePositions(
+                rt.vehiclePositions,
+                state.selectedVehicleDescriptor,
+                state.selectedTripDescriptor,
+              ),
+              filteredAlerts: _filterAlerts(
+                rt.alerts,
+                state.gtfs.routesLookup,
+                state.selectedTripDescriptor,
+              ),
             ),
-            filteredVehiclePositions: _filterVehiclePositions(
-              rt.vehiclePositions,
-              state.selectedVehicleDescriptor,
-              state.selectedTripDescriptor,
-            ),
-            filteredAlerts: _filterAlerts(
-              rt.alerts,
-              state.gtfs.routesLookup,
-              state.selectedTripDescriptor,
-            ),
-          ),
-        );
-      },
-    );
+          );
+        },
+      );
 
-    emit(
-      state.copyWith(realtimeSyncState: RealtimeSyncState.syncing),
-    );
+      emit(
+        state.copyWith(realtimeSyncState: RealtimeSyncState.syncing),
+      );
+    }
   }
 
   Future<void> disableSync() async {
-    return _closeRealtimeFeedsSubscription().then(
-      (_) => emit(
-        state.copyWith(realtimeSyncState: RealtimeSyncState.disabled),
-      ),
-    );
+    if (state.realtimeSyncState == RealtimeSyncState.syncing) {
+      return _closeRealtimeFeedsSubscription().then(
+        (_) => emit(
+          state.copyWith(realtimeSyncState: RealtimeSyncState.disabled),
+        ),
+      );
+    }
   }
 
   void deselect() {
