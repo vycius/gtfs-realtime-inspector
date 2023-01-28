@@ -34,14 +34,14 @@ class MyApp extends StatelessWidget {
     );
 
     final lightTheme = ThemeData(
-      primarySwatch: Colors.indigo,
-      visualDensity: VisualDensity.adaptivePlatformDensity,
+      useMaterial3: true,
+      colorSchemeSeed: Colors.indigo,
       inputDecorationTheme: inputDecorationTheme,
       brightness: Brightness.light,
     );
     final darkTheme = ThemeData(
-      primarySwatch: Colors.indigo,
-      visualDensity: VisualDensity.adaptivePlatformDensity,
+      useMaterial3: true,
+      colorSchemeSeed: Colors.indigo,
       inputDecorationTheme: inputDecorationTheme,
       brightness: Brightness.dark,
     );
