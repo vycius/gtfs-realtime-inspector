@@ -175,7 +175,6 @@ class _CodeViewBody extends StatelessWidget {
 
     return Chip(
       label: Text(textParts.join(' or ')),
-      deleteIcon: const Icon(Icons.close),
       deleteButtonTooltipMessage: 'Deselect',
       onDeleted: () => context.read<InspectCubit>().deselect(),
     );
