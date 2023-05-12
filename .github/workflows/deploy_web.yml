@@ -1,32 +1,18 @@
 name: Build and deploy WEB
 
 on:
-  pull_request:
   push:
-    branches:
-      - '**'
-    tags-ignore:
-      - '**'
-
-  # Allows you to run this workflow manually from the Actions tab
+    branches: [ main ]
+  pull_request:
   workflow_dispatch:
-
-permissions:
-  contents: write
-  pages: write
-  id-token: write
-
-# Allow one concurrent deployment
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
 
 jobs:
   build_web:
-    concurrency: ci-${{ github.ref }}
-    name: Build WEB version
-    runs-on: ubuntu-20.04
-    timeout-minutes: 30
+    name: Build WEB
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
 
     steps:
       - uses: actions/checkout@v3
@@ -44,16 +30,33 @@ jobs:
 
       - run: flutter build web
 
-      - run: touch build/web/.nojekyll
-
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-pages
-          folder: build/web/
-
       - uses: actions/upload-artifact@v3
         name: Upload pubspec.lock
         with:
           name: pubspec.lock
           path: pubspec.lock
+
+      - name: Upload WEB as artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: build/web
+
+  deploy:
+    name: Deploy page
+    runs-on: ubuntu-latest
+    needs: build
+    concurrency: deploy-github-page
+    if: github.ref == 'refs/heads/main'
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
