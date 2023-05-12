@@ -160,10 +160,10 @@ class _TransitDataFutureBuilder extends StatelessWidget {
           );
         }
 
-        return Center(
+        return const Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               CircularProgressIndicator(),
               Padding(
                 padding: EdgeInsets.only(top: 16),

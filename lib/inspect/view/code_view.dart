@@ -91,7 +91,7 @@ class _CodeViewBody extends StatelessWidget {
                 context.go(
                   context.namedLocation(
                     'info',
-                    queryParams: {
+                    queryParameters: {
                       'gtfs_url': gtfs.url,
                       'gtfs_realtime_urls': gtfsRealtimeUrls,
                     },

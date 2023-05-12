@@ -174,7 +174,7 @@ class FeedsInputPage extends StatelessWidget {
     context.push(
       context.namedLocation(
         'inspect',
-        queryParams: {
+        queryParameters: {
           'gtfs_url': gtfsUrl,
           'gtfs_realtime_urls': gtfsRealtimeUrls,
         },
